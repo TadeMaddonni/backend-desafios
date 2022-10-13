@@ -91,15 +91,6 @@ class Contenedor {
 					});
 					this.escribirProductos();
 					console.log(this.productos);
-				} else {
-					this.productos = [
-						res,
-						{
-							...object,
-							id: this.productos.length + 1,
-						},
-					];
-					this.escribirProductos();
 				}
 			} catch (error) {
 				console.log("Error: " + error);
@@ -146,4 +137,3 @@ class Contenedor {
 }
 
 const contenedor = new Contenedor("./productos.json");
-contenedor.save({name:"tade", apellido:"maddonni"})
