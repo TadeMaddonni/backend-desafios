@@ -1,7 +1,7 @@
 [
-  {
-    "name": "Osvaldo",
-    "apellido": "jajaja",
-    "id": 1
-  }
+    {
+        "name": "Coca Cola",
+        "price": 23,
+        "id": 1
+    }
 ]

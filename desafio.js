@@ -69,7 +69,7 @@ class Contenedor {
 
 	productos = [];
 	escribirProductos() {
-		fs.writeFileSync(this.ruta, JSON.stringify(this.productos, null, 2));
+		fs.writeFileSync(this.ruta, JSON.stringify(this.productos, null, 4));
 	}
 	async leerProductos() {
 		try {
@@ -90,20 +90,23 @@ class Contenedor {
 	}
 	async save(object) {
 		const archivo = await this.leerArchivo();
-		if (archivo.length < 1 || archivo === "[]") {
+		if (archivo === undefined || archivo === "[]" || archivo.length < 1 ) {
 			this.productos.push({ ...object, id: this.productos.length + 1 });
+			console.log("El id del producto es " + this.productos.length);
 			this.escribirProductos();
 		} else {
 			try {
 				const res = await this.leerProductos();
-				if (res.length >= 1) {
-					this.productos = res;
-					this.productos.push({
-						...object,
-						id: this.productos[this.productos.length - 1].id + 1,
-					});
-					this.escribirProductos();
-				}
+				this.productos = await res;
+				const productId =
+					this.productos[this.productos.length - 1].id + 1;
+				console.log("El id del producto agregado es: " + productId);
+				this.productos.push({
+					...object,
+					id: productId,
+				});
+
+				this.escribirProductos();
 			} catch (error) {
 				console.log("Error: " + error);
 			}
@@ -149,4 +152,4 @@ class Contenedor {
 }
 
 const contenedor = new Contenedor("./productos.json");
-contenedor.save({ name: "Osvaldo", apellido: "jajaja",});
+contenedor.save({ name: "Coca Cola", price: 23 });
