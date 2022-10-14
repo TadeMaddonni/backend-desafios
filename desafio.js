@@ -68,21 +68,34 @@ class Contenedor {
 	}
 
 	productos = [];
-	async escribirProductos() {
-		await fs.promises.writeFile(
-			this.ruta,
-			JSON.stringify(this.productos, null, 2)
-		);
+	escribirProductos() {
+		fs.writeFileSync(this.ruta, JSON.stringify(this.productos, null, 2));
+	}
+	async leerProductos() {
+		try {
+			const data = await fs.promises.readFile(this.ruta, "utf-8");
+			const res = await JSON.parse(data);
+			return res;
+		} catch (error) {
+			console.log("error: " + error.message);
+		}
+	}
+	async leerArchivo() {
+		try {
+			const archivo = await fs.promises.readFile(this.ruta, "utf8");
+			return archivo;
+		} catch (error) {
+			console.log("error: " + error.message);
+		}
 	}
 	async save(object) {
-		const archivo = await fs.promises.readFile(this.ruta, "utf8");
+		const archivo = await this.leerArchivo();
 		if (archivo.length < 1 || archivo === "[]") {
 			this.productos.push({ ...object, id: this.productos.length + 1 });
 			this.escribirProductos();
 		} else {
 			try {
-				const data = await fs.promises.readFile(this.ruta, "utf-8");
-				const res = await JSON.parse(data);
+				const res = await this.leerProductos();
 				if (res.length >= 1) {
 					this.productos = res;
 					this.productos.push({
@@ -90,7 +103,6 @@ class Contenedor {
 						id: this.productos[this.productos.length - 1].id + 1,
 					});
 					this.escribirProductos();
-					console.log(this.productos);
 				}
 			} catch (error) {
 				console.log("Error: " + error);
@@ -137,3 +149,4 @@ class Contenedor {
 }
 
 const contenedor = new Contenedor("./productos.json");
+contenedor.save({ name: "Osvaldo", apellido: "jajaja",});
