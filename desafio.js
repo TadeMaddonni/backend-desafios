@@ -104,6 +104,4 @@ class Contenedor {
 }
 
 const contenedor = new Contenedor("./productos.json");
-contenedor.save({ name: "Agua mineral", price: 19 });
-contenedor.save({ name: "Coca Cola", price: 21 });
-contenedor.save({ name: "Agua saborizada de pomelo", price: 20 });
+
