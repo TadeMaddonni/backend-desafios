@@ -1,7 +1,17 @@
 [
-    {
-        "name": "Coca Cola",
-        "price": 23,
-        "id": 1
-    }
+  {
+    "name": "Agua mineral",
+    "price": 19,
+    "id": 1
+  },
+  {
+    "name": "Coca Cola",
+    "price": 21,
+    "id": 2
+  },
+  {
+    "name": "Agua saborizada de pomelo",
+    "price": 20,
+    "id": 3
+  }
 ]
