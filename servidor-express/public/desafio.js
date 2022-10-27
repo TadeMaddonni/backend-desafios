@@ -38,19 +38,7 @@ obtenerUnoForm.addEventListener("submit", (e) => {
 		alert("Los datos ingresados no son validos");
 	} else {
 		window.location.href = `/api/productos/${ID}`;
-		/* 		fetch("/api/productos", {
-			method: "POST",
-			body: JSON.stringify({
-				name: nombre,
-				price: precio,
-				thumbnail: thumbnail,
-			}),
-			headers: {
-				"Content-type": "application/json; charset=UTF-8",
-			},
-		})
-			.then((res) => res.json())
-			.then((res) => alert(res.msg)); */
+
 	}
 });
 const modificarUno = d.getElementById("modificarUno");
