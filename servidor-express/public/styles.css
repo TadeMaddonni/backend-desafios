@@ -1,0 +1,30 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+form {
+	padding-block: 50px;
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	justify-content: center;
+	align-items: center;
+}
+
+button {
+	width: 200px;
+	height: 30px;
+	background-color: black;
+	color: white;
+	cursor: pointer;
+}
+
+.obtenerTodos {
+	padding-block: 50px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
