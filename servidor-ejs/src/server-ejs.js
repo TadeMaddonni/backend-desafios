@@ -1,29 +1,22 @@
 const express = require("express");
-const handlebars = require("express-handlebars");
 const app = express();
+// const pug = require("pug");
 const path = require("path");
 
-// APP USES
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 const viewsFolder = path.join(__dirname, "views");
 
-// Inicializando motor de plantillas
-app.engine("handlebars", handlebars.engine());
-console.log(viewsFolder);
-
-// Ejecutar el servidor
-app.listen(8080, (req, res) => {
-	console.log("Servidor desplegado en el puerto 8080");
+app.listen(8080, () => {
+	console.log("Servidor escuchando en el puerto 8080");
 });
 
-// Donde tengo las vistas de mi proyecto
-app.set("views", viewsFolder);
+//Configurando el motor de plantillas (No se necesita app.engine)
+app.set("views", viewsFolder); // Donde están las vistas
+app.set("view engine", "ejs"); // Que motor de vistas uso
 
-// Que motor de plantillas voy a utilizar
-app.set("view engine", "handlebars");
-
+/* Array de productos */
 // Lista de productos
 let PRODUCTOS = [
 	{
@@ -47,22 +40,17 @@ let PRODUCTOS = [
 	},
 ];
 
+//Configuración de rutas
 app.get("/", (req, res) => {
-	console.log("Req recibida");
-	res.render("home"); // Primer parametro: Nombre de la vista a mostrart
-});
-
-app.get("/productos", (req, res) => {
-	res.render("productos", {
-		productos: PRODUCTOS,
-	});
+	console.log("req recibida");
+	res.render("welcome");
 });
 
 app.post("/productos", async (req, res) => {
 	const item = await req.body;
 	const yaIngresado = PRODUCTOS.some((el) => el.name === item.name);
 	if (yaIngresado) {
-		console.log("Ya existe");
+		console.log("Ya ingresado")
 	} else {
 		PRODUCTOS.push({
 			...item,
@@ -73,6 +61,10 @@ app.post("/productos", async (req, res) => {
 					: PRODUCTOS.length + 1,
 		});
 		console.log(PRODUCTOS);
-		res.redirect("/");
 	}
+	res.redirect("/")
+});
+
+app.get("/productos", (req, res) => {
+	res.render("productos", {productos: PRODUCTOS });
 });
