@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { arch } = require("os");
 
 class Contenedor {
 	productos = [
@@ -16,15 +17,17 @@ class Contenedor {
 		},
 	];
 
-	readChat() {
-		const archivo = fs.readFileSync(__dirname + "/chat/chat.txt", "utf8");
+	readFile() {
+		const archivo = JSON.parse(
+			fs.readFileSync(__dirname + "/chat/chat.txt", "utf-8")
+		);
 		if (archivo) {
-			return JSON.parse(archivo);
+			return archivo;
 		} else {
 			return [];
 		}
 	}
-	messages = this.readChat();
+	messages = this.readFile();
 
 	writeChat() {
 		fs.writeFileSync(
