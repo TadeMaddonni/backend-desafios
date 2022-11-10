@@ -9,9 +9,4 @@
     "date": "10/11/2022, 15:06:47",
     "text": "Como estas"
   },
-  {
-    "author": "tade@gmail.com",
-    "date": "10/11/2022, 15:11:22",
-    "text": "Buenas alguien agregó el producto Coca cola?"
-  }
 ]
