@@ -1,0 +1,27 @@
+[
+  {
+    "author": "josesa@gmail.com",
+    "date": "10/11/2022, 20:50:01",
+    "text": "Hola tade decime"
+  },
+  {
+    "author": "tade@gmail.com",
+    "date": "10/11/2022, 20:50:16",
+    "text": "voy a agregar el producto CocaCola"
+  },
+  {
+    "author": "tade@gmail.com",
+    "date": "10/11/2022, 20:56:02",
+    "text": "buenas"
+  },
+  {
+    "author": "tade@gmail.com",
+    "date": "10/11/2022, 21:05:44",
+    "text": "Buenas"
+  },
+  {
+    "author": "tade@gmail.com",
+    "date": "24/11/2022, 12:27:18",
+    "text": "Buenas"
+  }
+]
