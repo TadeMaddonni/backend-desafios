@@ -6,7 +6,7 @@ console.log(dbPath);
 const sqliteOptions = {
 	client: "sqlite3",
 	connection: {
-		filename: "../db/ecommerce.sqlite",
+		filename: "./src/db/ecommerce.sqlite",
 	},
 	useNullAsDefault: true,
 };

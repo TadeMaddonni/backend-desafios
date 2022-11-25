@@ -25,6 +25,7 @@ app.set("view engine", "handlebars");
 const server = app.listen(8080, () => {
 	console.log("Server listening on port 8080");
 	productContainer.getProducts();
+	productContainer.setMessages();
 });
 
 // Creación servidor websocker

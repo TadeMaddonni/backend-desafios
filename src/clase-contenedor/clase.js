@@ -1,10 +1,13 @@
 const fs = require("fs");
+const { default: knex } = require("knex");
 const { mariaDBOptions } = require("../mariaDb.js");
+const { sqliteOptions } = require("../sqlite.js");
 const knexProducts = require("knex")(mariaDBOptions);
-
+const knexChat = require("knex")(sqliteOptions);
 class Contenedor {
 	constructor() {
 		this.productos = [];
+		this.messages = [];
 	}
 	getProducts() {
 		knexProducts
@@ -40,24 +43,19 @@ class Contenedor {
 				knexProducts.destroy();
 			}); */
 	}
-	readFile() {
-		const archivo = JSON.parse(
-			fs.readFileSync(__dirname + "/chat/chat.txt", "utf-8")
-		);
-		if (archivo) {
-			return archivo;
-		} else {
-			return [];
-		}
+	async setMessages() {
+		const results = await knexChat("chat").select("*");
+		const chatMessages = await results.map((elm) => ({ ...elm }));
+		console.log(chatMessages);
+		this.messages = await chatMessages;
 	}
-	messages = this.readFile();
 
-	writeChat() {
+	/* 	writeChat() {
 		fs.writeFileSync(
 			__dirname + "/chat/chat.txt",
 			JSON.stringify(this.messages, null, 2)
 		);
-	}
+	} */
 	getAll() {
 		return this.productos;
 	}
@@ -79,7 +77,6 @@ class Contenedor {
 				};
 				this.addProductToDb(producto);
 				this.getProducts();
-				
 			} else {
 				return "Producto incorrecto";
 			}
@@ -87,11 +84,17 @@ class Contenedor {
 			return "Already exits";
 		}
 	}
-
+	addMessageToDb(message) {
+		knexChat("chat")
+			.insert(message)
+			.then(() => {
+				console.log("Mensaje enviado a la base de datos");
+			});
+	}
 	addMessage(message) {
 		if (message.text != "") {
 			this.messages.push(message);
-			this.writeChat();
+			this.addMessageToDb(message);
 		} else {
 			return;
 		}

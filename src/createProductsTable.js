@@ -3,7 +3,7 @@ const knex = require("knex")(mariaDBOptions);
 
 // Crear tabla (Ya creada)
 
-/* knex.schema
+knex.schema
 	.createTable("products", (table) => {
 		table.increments("id");
 		table.string("name");
@@ -15,14 +15,5 @@ const knex = require("knex")(mariaDBOptions);
 	.finally(() => {
 		knex.destroy();
 	});
- */
 
-/* knex("products") // Agregar producto
-	.insert({
-		name: "Coca Cola",
-		thumbnail: "https://i.postimg.cc/76b2Ld3b/coca-cola.png",
-		price: 20,
-	})
-	.then(() => {
-		console.log("Producto Agregado");
-	}); */
+
