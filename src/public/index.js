@@ -82,14 +82,14 @@ socketClient.on("messages", async (data) => {
 	console.log(messagesData);
 	const mensajes = document.getElementById("mensajes");
 	mensajes.innerHTML = "";
-	data.forEach((el) => {
+	messagesData.forEach((el) => {
 		console.log(el.author);
 		const div = document.createElement("div");
 		div.classList.add("message");
 		div.innerHTML = `
             <div class="left">
                 <p class="bold">${el.author.id}</p>
-                <p class="italic">[${el.author.edad}] :</p>
+                <p class="italic">[${el.author.alias}] :</p>
             </div>
             <p class="text">${el.text}</p>
 		`;
