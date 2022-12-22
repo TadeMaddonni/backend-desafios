@@ -1,7 +1,7 @@
 import { normalize, schema } from "normalizr";
 
-const authorSchema = schema.Entity("authors");
-const messageSchema = schema.Entity("messages", {
+const authorSchema = new schema.Entity("authors");
+const messageSchema = new schema.Entity("messages", {
 	author: authorSchema,
 });
 

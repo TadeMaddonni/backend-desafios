@@ -132,7 +132,9 @@ class Contenedor {
 		this.getMessages();
 		console.log(this.messages);
 		const normalizedData = normalize(this.messages, messageSchema);
-		return this.messages;
+		console.log(JSON.stringify(normalizedData, null, 2));
+
+		return normalizedData;
 	}
 
 	addMessage(message) {
