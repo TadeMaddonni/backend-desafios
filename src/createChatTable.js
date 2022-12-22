@@ -1,15 +1,14 @@
-const { sqliteOptions } = require("./sqlite");
-const knex = require("knex")(sqliteOptions);
+import { sqliteOptions } from "./sqlite.js";
+import knex from "knex";
+const knexSqlite = knex(sqliteOptions);
 
-knex.schema
+knexSqlite.schema
 	.createTable("chat", (table) => {
-		table.increments("id");
-		table.string("author");
-		table.string("date");
+		table.json("author");
 		table.string("text");
 	})
 	.then(() => console.log("Chat table created"))
 	.catch((err) => console.error(err))
 	.finally(() => {
-		knex.destroy();
+		knexSqlite.destroy();
 	});

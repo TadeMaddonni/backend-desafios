@@ -8,6 +8,4 @@ const mariaDBOptions = {
 	},
 };
 
-module.exports = {
-	mariaDBOptions,
-};
+export { mariaDBOptions };

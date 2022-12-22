@@ -43,14 +43,30 @@ socketClient.on("productos", (data) => {
 const chatForm = document.getElementById("chatForm");
 const inputChatEmail = document.getElementById("inputChatEmail");
 const inputChatText = document.getElementById("inputChatText");
+const inputNombre = document.getElementById("inputChatNombre");
+const inputEdad = document.getElementById("inputChatEdad");
+
+const inputApellido = document.getElementById("inputApellido");
+const inputAlias = document.getElementById("inputAlias");
 console.log(chatForm);
 
 const addMessage = (e) => {
 	e.preventDefault();
+	let email = inputChatEmail.value;
+	let text = inputChatText.value;
+	let nombre = inputNombre.value;
+	let apellido = inputApellido.value;
+	let edad = inputEdad.value;
+	let alias = inputAlias.value;
 	const message = {
-		author: inputChatEmail.value,
-		date: new Date().toLocaleString(),
-		text: inputChatText.value,
+		author: {
+			id: email,
+			nombre: nombre,
+			apellido: apellido,
+			edad: edad,
+			alias: alias,
+		},
+		text: text,
 	};
 	socketClient.emit("newMessage", message);
 	inputChatText.value = "";
@@ -59,17 +75,18 @@ const addMessage = (e) => {
 
 chatForm.addEventListener("submit", addMessage);
 
-socketClient.on("messages", (data) => {
+socketClient.on("messages", async (data) => {
 	console.log(data);
 	const mensajes = document.getElementById("mensajes");
 	mensajes.innerHTML = "";
 	data.forEach((el) => {
+		console.log(el.author);
 		const div = document.createElement("div");
 		div.classList.add("message");
 		div.innerHTML = `
             <div class="left">
-                <p class="bold">${el.author}</p>
-                <p class="italic">[${el.date}] :</p>
+                <p class="bold">${el.author.id}</p>
+                <p class="italic">[${el.author.edad}] :</p>
             </div>
             <p class="text">${el.text}</p>
 		`;

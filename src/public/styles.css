@@ -146,7 +146,7 @@ a:visited {
 	grid-template-columns: 2fr 1fr 1fr;
 }
 
-.productTitle{
+.productTitle {
 	font-weight: 700;
 }
 .product {
@@ -216,4 +216,9 @@ a:visited {
 	border: 1px solid grey;
 	padding: 20px;
 	width: 70%;
+}
+
+.chatContainer {
+	display: flex;
+	gap: 20px;
 }

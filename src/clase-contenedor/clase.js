@@ -1,16 +1,37 @@
-const fs = require("fs");
-const { default: knex } = require("knex");
-const { mariaDBOptions } = require("../mariaDb.js");
-const { sqliteOptions } = require("../sqlite.js");
-const knexProducts = require("knex")(mariaDBOptions);
-const knexChat = require("knex")(sqliteOptions);
+import fs, { write } from "fs";
+import knex from "knex";
+import { mariaDBOptions } from "../mariaDb.js";
+import { sqliteOptions } from "../sqlite.js";
+import { faker } from "@faker-js/faker";
+import { fileURLToPath } from "url";
+import path from "path";
+import { normalize, denormalize, schema } from "normalizr";
+import { messageSchema } from "./normalizeSchema/index.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const knexProducts = knex(mariaDBOptions);
+const knexChat = knex(sqliteOptions);
+
+const { commerce, image } = faker;
+
 class Contenedor {
 	constructor() {
 		this.productos = [];
-		this.messages = [];
+		this.messages = this.getMessages();
 	}
+
 	getProducts() {
-		knexProducts
+		for (let i = 0; i < 5; i++) {
+			let product = {
+				name: commerce.productName(),
+				price: commerce.price(),
+				thumbnail: image.avatar(),
+			};
+			this.productos.push(product);
+		}
+		/* knexProducts
 			.from("products")
 			.select("*")
 			.then((rows) => {
@@ -24,13 +45,25 @@ class Contenedor {
 						};
 						A;
 					}) || [];
-			});
+			}); */
 		// .finally(() => knexProducts.destroy());
 		return;
 	}
 
+	getMessages() {
+		this.messages = JSON.parse(
+			fs.readFileSync(__dirname + "/chat/chat.txt")
+		);
+		console.log(this.messages);
+	}
+
+	sendMessages() {
+		this.getMessages();
+	}
+
 	addProductToDb(producto) {
-		knexProducts("products")
+		this.productos.push(producto);
+		/* 		knexProducts("products")
 			.insert(producto)
 			.then((res) => {
 				console.log("producto agregado correctamente");
@@ -38,24 +71,18 @@ class Contenedor {
 			.finally(() => {
 				this.getProducts();
 				return "Producto agregado con exito";
-			});
+			}); */
 		/* 			.finally(() => {
 				knexProducts.destroy();
 			}); */
 	}
-	async setMessages() {
-		const results = await knexChat("chat").select("*");
-		const chatMessages = await results.map((elm) => ({ ...elm }));
-		console.log(chatMessages);
-		this.messages = await chatMessages;
-	}
 
-	/* 	writeChat() {
-		fs.writeFileSync(
-			__dirname + "/chat/chat.txt",
-			JSON.stringify(this.messages, null, 2)
-		);
+	/* 	async setMessages() {
+		const results = await knexChat("chat").select("*");
+		const chatMessages = results.map((elm) => ({ ...elm }));
+		this.messages = chatMessages;
 	} */
+
 	getAll() {
 		return this.productos;
 	}
@@ -84,6 +111,15 @@ class Contenedor {
 			return "Already exits";
 		}
 	}
+
+	writeChat() {
+		fs.writeFileSync(
+			__dirname + "/chat/chat.txt",
+			JSON.stringify(this.messages, null, 2),
+			"utf-8"
+		);
+	}
+
 	addMessageToDb(message) {
 		knexChat("chat")
 			.insert(message)
@@ -91,14 +127,22 @@ class Contenedor {
 				console.log("Mensaje enviado a la base de datos");
 			});
 	}
+
+	sendMessages() {
+		this.getMessages();
+		console.log(this.messages);
+		const normalizedData = normalize(this.messages, messageSchema);
+		return this.messages;
+	}
+
 	addMessage(message) {
 		if (message.text != "") {
 			this.messages.push(message);
-			this.addMessageToDb(message);
+			this.writeChat();
 		} else {
 			return;
 		}
 	}
 }
 
-module.exports = Contenedor;
+export { Contenedor };
