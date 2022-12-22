@@ -1,4 +1,4 @@
-import { denormalize } from "normalizr";
+import { messageSchema } from "../clase-contenedor/normalizeSchema";
 
 console.log("Funcionando");
 // Ejecutando socket del lado del cliente.
@@ -78,7 +78,7 @@ const addMessage = (e) => {
 chatForm.addEventListener("submit", addMessage);
 
 socketClient.on("messages", async (data) => {
-	const messagesData = denormalize(data);
+	const messagesData = denormalize(data.result, messageSchema, data.entities);
 	console.log(messagesData);
 	const mensajes = document.getElementById("mensajes");
 	mensajes.innerHTML = "";

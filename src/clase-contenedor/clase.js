@@ -11,9 +11,6 @@ import { messageSchema } from "./normalizeSchema/index.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const knexProducts = knex(mariaDBOptions);
-const knexChat = knex(sqliteOptions);
-
 const { commerce, image } = faker;
 
 class Contenedor {
@@ -31,22 +28,6 @@ class Contenedor {
 			};
 			this.productos.push(product);
 		}
-		/* knexProducts
-			.from("products")
-			.select("*")
-			.then((rows) => {
-				this.productos =
-					rows.map((el) => {
-						return {
-							id: el.id,
-							name: el.name,
-							thumbnail: el.thumbnail,
-							price: el.price,
-						};
-						A;
-					}) || [];
-			}); */
-		// .finally(() => knexProducts.destroy());
 		return;
 	}
 
@@ -57,24 +38,8 @@ class Contenedor {
 		console.log(this.messages);
 	}
 
-	sendMessages() {
-		this.getMessages();
-	}
-
 	addProductToDb(producto) {
 		this.productos.push(producto);
-		/* 		knexProducts("products")
-			.insert(producto)
-			.then((res) => {
-				console.log("producto agregado correctamente");
-			})
-			.finally(() => {
-				this.getProducts();
-				return "Producto agregado con exito";
-			}); */
-		/* 			.finally(() => {
-				knexProducts.destroy();
-			}); */
 	}
 
 	/* 	async setMessages() {
@@ -82,10 +47,6 @@ class Contenedor {
 		const chatMessages = results.map((elm) => ({ ...elm }));
 		this.messages = chatMessages;
 	} */
-
-	getAll() {
-		return this.productos;
-	}
 
 	addProduct(product) {
 		const itExists = this.productos.some(
