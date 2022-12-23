@@ -1,0 +1,9 @@
+Cookies => 
+
+_ Tiempo de vida. Se les puede configurar el mismo cuando se cumple permite la eliminación de la cookie. Se utiliza mucho para las sesiones.
+
+_ Las cookies son almacenadas del lado del cliente. Mas especificamente en el navegador. 
+
+_ No se debe guardar información sensible en las cookies. Al igual que en localStorage.
+
+_
