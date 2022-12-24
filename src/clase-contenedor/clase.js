@@ -2,11 +2,12 @@ import fs, { write } from "fs";
 import knex from "knex";
 import { mariaDBOptions } from "../mariaDb.js";
 import { sqliteOptions } from "../sqlite.js";
+
 import { faker } from "@faker-js/faker";
 import { fileURLToPath } from "url";
 import path from "path";
 import { normalize, denormalize, schema } from "normalizr";
-import { messageSchema } from "./normalizeSchema/index.js";
+import { chatSchema, messageSchema } from "./normalizeSchema/index.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,7 +20,7 @@ class Contenedor {
 		this.messages = this.getMessages();
 	}
 
-	getProducts() {
+	async getProducts() {
 		for (let i = 0; i < 5; i++) {
 			let product = {
 				name: commerce.productName(),
@@ -28,25 +29,20 @@ class Contenedor {
 			};
 			this.productos.push(product);
 		}
-		return;
+		return this.productos;
 	}
 
 	getMessages() {
 		this.messages = JSON.parse(
 			fs.readFileSync(__dirname + "/chat/chat.txt")
 		);
-		console.log(this.messages);
+		return this.messages;
 	}
 
 	addProductToDb(producto) {
 		this.productos.push(producto);
+		return "Product added correctly";
 	}
-
-	/* 	async setMessages() {
-		const results = await knexChat("chat").select("*");
-		const chatMessages = results.map((elm) => ({ ...elm }));
-		this.messages = chatMessages;
-	} */
 
 	addProduct(product) {
 		const itExists = this.productos.some(
@@ -89,18 +85,28 @@ class Contenedor {
 			});
 	}
 
-	sendMessages() {
+	/* 	async sendMessages() {
 		this.getMessages();
-		console.log(this.messages);
-		const normalizedData = normalize(this.messages, messageSchema);
+
+		const normalizedData = normalize(
+			{ id: "chatHistory", messages: this.messages },
+			chatSchema
+		);
+
 		console.log(JSON.stringify(normalizedData, null, 2));
 
 		return normalizedData;
-	}
+	} */
 
 	addMessage(message) {
 		if (message.text != "") {
-			this.messages.push(message);
+			const lastId = this.messages[this.messages.length - 1]?.id + 1 || 1;
+			const newMessage = {
+				...message,
+				id: lastId,
+				timestamp: new Date().toLocaleString(),
+			};
+			this.messages.push(newMessage);
 			this.writeChat();
 		} else {
 			return;

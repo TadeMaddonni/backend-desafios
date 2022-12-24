@@ -1,4 +1,5 @@
-import { messageSchema } from "../clase-contenedor/normalizeSchema";
+// import { messageSchema } from "../clase-contenedor/normalizeSchema";
+// const { denormalize } = require("normalizr");
 
 console.log("Funcionando");
 // Ejecutando socket del lado del cliente.
@@ -63,6 +64,7 @@ const addMessage = (e) => {
 	const message = {
 		author: {
 			id: email,
+			email: email,
 			nombre: nombre,
 			apellido: apellido,
 			edad: edad,
@@ -77,13 +79,30 @@ const addMessage = (e) => {
 
 chatForm.addEventListener("submit", addMessage);
 
+const authorSchema = new normalizr.schema.Entity(
+	"authors",
+	{},
+	{ idAttribute: "email" }
+); //id:con el valor del campo email.
+const messageSchema = new normalizr.schema.Entity("messages", {
+	author: authorSchema,
+});
+//esquema global o padre
+const chatSchema = new normalizr.schema.Entity("chats", {
+	messages: [messageSchema],
+});
+
 socketClient.on("messages", async (data) => {
-	const messagesData = denormalize(data.result, messageSchema, data.entities);
-	console.log(messagesData);
+	let messagesData = await normalizr.denormalize(
+		data.result,
+		chatSchema,
+		data.entities
+	);
+	console.log(messagesData.messages);
 	const mensajes = document.getElementById("mensajes");
+
 	mensajes.innerHTML = "";
-	messagesData.forEach((el) => {
-		console.log(el.author);
+	messagesData?.messages?.forEach((el) => {
 		const div = document.createElement("div");
 		div.classList.add("message");
 		div.innerHTML = `
