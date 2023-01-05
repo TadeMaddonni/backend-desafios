@@ -8,6 +8,24 @@
 	</head>
 	<body>
 		<main>
+			<div>
+				<form id="loginForm" action="/login" method="post">
+					<h1>Formulario de Login</h1>
+					<input
+						type="text"
+						name="name"
+						placeholder="Ingrese su nombre"
+						minlength="0"
+					/>
+					<button>Enviar</button>
+				</form>
+
+				<div id="loggedInComponent" class="hidden">
+					<span id="loggedInMessage">Bienvenido</span>
+
+					<button>Logout</button>
+				</div>
+			</div>
 			<div class="appContainer">
 				<form id="form">
 					<h2>Agregá un producto:</h2>

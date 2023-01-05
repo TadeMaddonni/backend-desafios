@@ -5,6 +5,9 @@ console.log("Funcionando");
 // Ejecutando socket del lado del cliente.
 const socketClient = io();
 
+//Logged in variable
+let login = false;
+
 const form = document.getElementById("form");
 const productNameInput = document.getElementById("productNameInput");
 const productPriceInput = document.getElementById("productPriceInput");
@@ -114,4 +117,19 @@ socketClient.on("messages", async (data) => {
 		`;
 		mensajes.appendChild(div);
 	});
+});
+
+socketClient.on("login", async (data) => {
+	console.log(data);
+	let loginFormComponent = document.getElementById("loginForm");
+	const loggedInMessage = document.getElementById("loggedInMessage");
+	const loggedInComponent = document.getElementById("loggedInComponent");
+	if (data) {
+		loginFormComponent.classList.add("hidden");
+		loggedInComponent.classList.remove("hidden");
+		loggedInMessage.innerText = data;
+		loggedInComponent.classList.add("visible");
+	} else {
+		loginFormComponent.classList.remove("hidden");
+	}
 });

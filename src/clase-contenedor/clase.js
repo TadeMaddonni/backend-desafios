@@ -1,7 +1,4 @@
 import fs, { write } from "fs";
-import knex from "knex";
-import { mariaDBOptions } from "../mariaDb.js";
-import { sqliteOptions } from "../sqlite.js";
 
 import { faker } from "@faker-js/faker";
 import { fileURLToPath } from "url";
@@ -18,6 +15,7 @@ class Contenedor {
 	constructor() {
 		this.productos = [];
 		this.messages = this.getMessages();
+		this.logged = false;
 	}
 
 	async getProducts() {
@@ -77,27 +75,6 @@ class Contenedor {
 		);
 	}
 
-	addMessageToDb(message) {
-		knexChat("chat")
-			.insert(message)
-			.then(() => {
-				console.log("Mensaje enviado a la base de datos");
-			});
-	}
-
-	/* 	async sendMessages() {
-		this.getMessages();
-
-		const normalizedData = normalize(
-			{ id: "chatHistory", messages: this.messages },
-			chatSchema
-		);
-
-		console.log(JSON.stringify(normalizedData, null, 2));
-
-		return normalizedData;
-	} */
-
 	addMessage(message) {
 		if (message.text != "") {
 			const lastId = this.messages[this.messages.length - 1]?.id + 1 || 1;
@@ -111,6 +88,14 @@ class Contenedor {
 		} else {
 			return;
 		}
+	}
+
+	login() {
+		console.log("logged in");
+	}
+
+	logout() {
+		console.log("logged out");
 	}
 }
 

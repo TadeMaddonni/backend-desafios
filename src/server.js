@@ -1,14 +1,15 @@
 import express from "express";
-// import { handlebars } from "express-handlebars";
 import { Server } from "socket.io";
-import path from "path";
 import { Contenedor } from "./clase-contenedor/clase.js";
-import { measureMemory } from "vm";
 import { fileURLToPath } from "url";
 import handlebars from "express-handlebars";
 import { chatSchema } from "./clase-contenedor/normalizeSchema/index.js";
 import { normalize } from "normalizr";
-
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import { DbConfig } from "./db/dbConfig.js";
+import path from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -19,23 +20,64 @@ const productContainer = new Contenedor();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
+app.use(cookieParser());
 
-//Configuracion del motor de plantilas
-app.engine(".hbs", handlebars.engine({ extname: ".hbs" }));
-app.set("views", __dirname + "/views");
-app.set("view engine", ".hbs");
+app.use(
+	session({
+		store: MongoStore.create({
+			mongoUrl: DbConfig.mongoAtlas.url,
+		}),
+		secret: "sessionSecreta",
+		//Indicarle a la sesión si vamos a guardar en memoria o persistencia externa
+		resave: false,
+		saveUninitialized: false,
+	})
+);
+
+const pathfILE = path.join(__dirname, "/public/login.html");
+console.log(pathfILE);
 
 const server = app.listen(8080, () => {
 	console.log("Server listening on port 8080");
 	productContainer.getProducts();
+
 	//rsproductContainer.getMessages();
 });
 
 // Creación servidor websocker
 const io = new Server(server); // Conectamos el websocket con el servidor principal de Express.
 
+app.get("/home", (req, res) => {
+	if (req.session.username) {
+		productContainer.logged = true;
+	}
+	console.log("home");
+	res.sendFile(path.join(__dirname + "/public/index.html"));
+});
+
 app.get("/", (req, res) => {
+	if (req.session.username) {
+		productContainer.logged = req.session.username;
+		res.sendFile(path.join(__dirname + "/public/index.html"));
+	} else {
+		res.redirect("/login");
+	}
 	res.render("home"); // Primer parametro: Nombre de la vista a mostrart
+});
+
+app.post("/login", (req, res) => {
+	const { name } = req.body;
+	if (name != "") {
+		req.session.username = name;
+		productContainer.logged = req.session.username;
+		res.redirect("/");
+	} else {
+		res.send("Credenciales no validas");
+	}
+});
+
+app.get("/login", (req, res) => {
+	res.sendFile(pathfILE);
 });
 
 //funciones que normaliza datos
@@ -78,6 +120,9 @@ io.on("connection", async (socket) => {
 		productContainer.addMessage(data);
 		io.sockets.emit("messages", await normalizeMessages());
 	});
+
+	//LOGIN
+	socket.emit("login", productContainer.logged);
 });
 
 /*
