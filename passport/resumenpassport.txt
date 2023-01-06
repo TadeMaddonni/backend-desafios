@@ -1,0 +1,4 @@
+Passport
+    => Serializar y deserializar. Permite tomar todos los datos de un usuario para y serializarlo (Asignarlo a un ID). A través de ese ID passport procede a deserializarlo. (No entendi mucho)
+
+    => 
