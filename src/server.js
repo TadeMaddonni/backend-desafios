@@ -1,25 +1,36 @@
 import express from "express";
+import handlebars from "express-handlebars";
+import cookieParser from "cookie-parser";
+import MongoStore from "connect-mongo";
+import session from "express-session";
+import path from "path";
 import { Server } from "socket.io";
 import { Contenedor } from "./clase-contenedor/clase.js";
 import { fileURLToPath } from "url";
-import handlebars from "express-handlebars";
 import { chatSchema } from "./clase-contenedor/normalizeSchema/index.js";
 import { normalize } from "normalizr";
-import cookieParser from "cookie-parser";
-import session from "express-session";
-import MongoStore from "connect-mongo";
 import { DbConfig } from "./db/dbConfig.js";
-import path from "path";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
+import { productRouter } from "./routes/products.js";
+import { clientRouter } from "./routes/client.js";
+import { loginRouter } from "./routes/login.js";
+import { productSocket } from "./routes/productSocket.js";
+import { chatSocket } from "./routes/chatSocket.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
-const productContainer = new Contenedor();
-
-// APP USES
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
+export const productContainer = new Contenedor();
+
+//Configuracion template engine handlebars
+app.engine(".hbs", handlebars.engine({ extname: ".hbs" }));
+app.set("views", __dirname + "/views");
+app.set("view engine", ".hbs");
+
+// APP USES
 app.use(cookieParser());
 
 app.use(
@@ -28,25 +39,31 @@ app.use(
 			mongoUrl: DbConfig.mongoAtlas.url,
 		}),
 		secret: "sessionSecreta",
-		//Indicarle a la sesión si vamos a guardar en memoria o persistencia externa
 		resave: false,
 		saveUninitialized: false,
 	})
 );
 
-const pathfILE = path.join(__dirname, "/public/login.html");
-console.log(pathfILE);
+// Server routes
+app.use("/api/productos", productRouter);
+app.use(clientRouter);
+app.use(loginRouter);
 
 const server = app.listen(8080, () => {
 	console.log("Server listening on port 8080");
 	productContainer.getProducts();
-
-	//rsproductContainer.getMessages();
 });
 
 // Creación servidor websocker
-const io = new Server(server); // Conectamos el websocket con el servidor principal de Express.
+const io = new Server(server);
 
+io.on("connection", async (socket) => {
+	console.log("Nuevo cliente conectado");
+
+	productSocket(socket, io.sockets);
+	chatSocket(socket, io.sockets);
+});
+/* 
 app.get("/home", (req, res) => {
 	if (req.session.username) {
 		productContainer.logged = true;
@@ -88,7 +105,7 @@ const normalizeData = (data) => {
 	);
 	return normalizedData;
 };
-const normalizeMessages = async () => {
+export const normalizeMessages = async () => {
 	const messages = await productContainer.getMessages();
 	const normalizedMessages = normalizeData(messages);
 	return normalizedMessages;

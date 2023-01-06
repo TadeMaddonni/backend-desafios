@@ -42,7 +42,7 @@ class Contenedor {
 		return "Product added correctly";
 	}
 
-	addProduct(product) {
+	async addProduct(product) {
 		const itExists = this.productos.some(
 			(prod) => prod.name === product.name
 		);
@@ -75,7 +75,7 @@ class Contenedor {
 		);
 	}
 
-	addMessage(message) {
+	async addMessage(message) {
 		if (message.text != "") {
 			const lastId = this.messages[this.messages.length - 1]?.id + 1 || 1;
 			const newMessage = {
