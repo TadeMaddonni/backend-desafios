@@ -1,0 +1,33 @@
+Autenticacion => 
+                Proceso de identificacion de usuarios para asegurarse de su    identidad. Para luego permitir acceso a los recursos solicitados
+
+
+    Métodos 
+            => Usuarios y contraseña: Es el metodo tradicional. Se ingresa el nombre de usuario o el mail y la password para autenticarse
+
+            => Passwordless: Consiste que cada vez que quereamos iniciar sesión a un recurso, se nos enviara al mail un enlace que nos permitirá acceder sin necesiadad de contraseña
+
+            => Redes Sociales: Iniciar sesión a traves de una red social. 
+
+            => Datos biometricos: Mediante huellas digitales.
+
+
+
+Autorización => 
+                Verifica los permisos que corresponden a cada identidad. Chequea los permisos. (Ejemplo: Usuario Admin y no Admin)
+
+
+
+
+// BREAK
+
+Passport (https://www.passportjs.org/packages/)
+        => Middleware de autenticación, solo autentica solicitudes.
+
+        => Strategy-local autentica usuarios mediante nombre de usuario y contraseña
+
+        => Strategy passport-openid para autenticación mediante openid
+
+        => Strategy passport-oauth autenticación mediante API  
+
+        => 
