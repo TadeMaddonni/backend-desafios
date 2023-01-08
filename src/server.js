@@ -37,6 +37,7 @@ app.use(
 	session({
 		store: MongoStore.create({
 			mongoUrl: DbConfig.mongoAtlas.url,
+			ttl: 600,
 		}),
 		secret: "sessionSecreta",
 		resave: false,

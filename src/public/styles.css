@@ -149,13 +149,6 @@ a:visited {
 .productTitle {
 	font-weight: 700;
 }
-.product {
-	width: 100%;
-	display: grid;
-	grid-template-columns: 2fr 1fr 1fr;
-	align-items: center;
-	justify-content: center;
-}
 
 .productTitle {
 	text-align: center;
@@ -271,10 +264,15 @@ form h1 {
 }
 
 .productHead {
+	margin-top: 30px;
 	width: 100%;
 	display: grid;
 	grid-template-columns: 2fr 2fr 2fr;
 	justify-items: center;
+}
+
+.title {
+	font-weight: bold;
 }
 .productBody {
 	margin-top: 20px;
@@ -314,4 +312,9 @@ h1 {
 	width: 100%;
 	display: flex;
 	justify-content: center;
+}
+
+.product {
+	align-self: center;
+	justify-self: center;
 }

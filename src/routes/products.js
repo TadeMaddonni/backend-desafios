@@ -4,7 +4,7 @@ import { productContainer } from "../server.js";
 const productRouter = express.Router();
 
 productRouter.get("/", async (req, res) => {
-	const productos = await productContainer.getProducts();
+	const productos = await productContainer.productos;
 	res.send(productos);
 });
 

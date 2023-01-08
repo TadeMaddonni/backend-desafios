@@ -27,9 +27,12 @@ const createTable = async (data) => {
 	return html;
 };
 
+const productsContainer = document.getElementById("productsContainer");
 socketClient.on("products", async (data) => {
+	console.log(data);
+	productsContainer.innerHTML = "";
 	const htmlTable = await createTable(data);
-	const productsContainer = document.getElementById("productsContainer");
+	productsContainer.innerHTML = htmlTable;
 });
 
 //Esquemas normalizr

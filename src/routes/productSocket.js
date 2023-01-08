@@ -1,12 +1,12 @@
 import { productContainer } from "../server.js";
 
 const productSocket = async (socket, sockets) => {
-	sockets.emit("products", await productContainer.getProducts());
+	sockets.emit("products", productContainer.productos);
 
 	socket.on("newProduct", async (data) => {
-		await productContainer.addProduct(data);
+		productContainer.addProduct(data);
 
-		socket.emit("products", await productContainer.getProducts());
+		socket.emit("products", productContainer.productos);
 	});
 };
 

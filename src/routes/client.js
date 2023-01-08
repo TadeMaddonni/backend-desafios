@@ -12,7 +12,9 @@ clientRouter.get("/", (req, res) => {
 });
 
 clientRouter.get("/productos", async (req, res) => {
-	res.render("products", { products: await productContainer.getProducts() });
+	res.render("products", {
+		products: productContainer.productos,
+	});
 });
 
 export { clientRouter };

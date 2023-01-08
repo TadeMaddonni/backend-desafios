@@ -12,22 +12,22 @@ const __dirname = path.dirname(__filename);
 const { commerce, image } = faker;
 
 class Contenedor {
-	constructor() {
-		this.productos = [];
-		this.messages = this.getMessages();
-		this.logged = false;
-	}
-
-	async getProducts() {
+	getProducts() {
+		let products = [];
 		for (let i = 0; i < 5; i++) {
 			let product = {
 				name: commerce.productName(),
 				price: commerce.price(),
 				thumbnail: image.avatar(),
 			};
-			this.productos.push(product);
+			products.push(product);
 		}
-		return this.productos;
+		return products;
+	}
+	constructor() {
+		this.productos = this.getProducts();
+		this.messages = this.getMessages();
+		this.logged = false;
 	}
 
 	getMessages() {
@@ -42,10 +42,12 @@ class Contenedor {
 		return "Product added correctly";
 	}
 
-	async addProduct(product) {
+	addProduct(product) {
 		const itExists = this.productos.some(
 			(prod) => prod.name === product.name
 		);
+		console.log(itExists);
+
 		if (!itExists) {
 			if (
 				product.name != "" &&
