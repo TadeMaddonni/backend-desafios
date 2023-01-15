@@ -2,6 +2,7 @@ import express from "express";
 import passport from "passport";
 import { Strategy as LocalStrategy, Strategy } from "passport-local";
 import { userModel } from "../models/UserModels.js";
+import { encryptPassword } from "../utils/passwordEncrypt.js";
 
 const signupRouter = express.Router();
 
@@ -12,30 +13,30 @@ passport.use(
 			passReqToCallback: true,
 			usernameField: "email",
 		},
-		(req, username, password, done) => {
+		async (req, username, password, done) => {
 			//Buscar el usuario dentro de la base de datos
-			userModel.findOne({ email: username }, (err, userFound) => {
-				if (err) {
-					return done(err);
-				}
-				if (userFound) {
-					return done(null, false, {
-						message: "El usuario ya existe",
-					});
-				}
-				const newUser = {
-					email: username,
-					password: password,
-				};
-				userModel.create(newUser, (err, userCreated) => {
-					err
-						? done(err, null, {
-								nessage:
-									"Hubo un error al registrar el usuario",
-						  })
-						: done(null, userCreated);
-				});
-			});
+			const user = await userModel.findOne({ email: username });
+			if (user) {
+				return done(
+					null,
+					false,
+					req.flash("signupMessage", "Usuario ya existente")
+				);
+			}
+			const newUser = {
+				email: username,
+				password: encryptPassword(password),
+			};
+			const userCreated = await userModel.create(newUser);
+			if (userCreated) {
+				done(
+					null,
+					false,
+					req.flash("signupMessage", "Ha ocurrido un error")
+				);
+			} else {
+				done(null, userCreated);
+			}
 		}
 	)
 );

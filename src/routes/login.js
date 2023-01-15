@@ -2,6 +2,8 @@ import express from "express";
 import passport from "passport";
 import { userModel } from "../models/UserModels.js";
 import { Strategy as LocalStrategy, Strategy } from "passport-local";
+import flash from "connect-flash";
+import { comparePasswords } from "../utils/passwordEncrypt.js";
 
 passport.use(
 	"loginStrategy",
@@ -9,31 +11,41 @@ passport.use(
 		{
 			passReqToCallback: true,
 			usernameField: "email",
+			passwordField: "password",
 		},
-		async (req, res, username, password, done) => {
+		async (req, username, password, done) => {
 			//Buscar el usuario dentro de la base de datos
-			await userModel.findOne({ email: username }, (err, userFound) => {
-				if (err) {
-					console.log(err);
-					return done(err);
+			const user = await userModel.findOne({ email: username });
+			console.log(user);
+			if (!user) {
+				return done(
+					null,
+					false,
+					req.flash("loginMessage", "Usuario no encontrado")
+				);
+			}
+			if (user) {
+				const userPassword = user.password;
+				const userEmail = user.email;
+
+				const passwordsMatch = comparePasswords(password, userPassword);
+				if (passwordsMatch) {
+					console.log("User Encontrado");
+					return done(
+						null,
+						user,
+						req.flash("loginMessage", "Credenciales validas")
+					);
+				} else {
+					console.log("Credenciales no validas");
+
+					done(
+						null,
+						false,
+						req.flash("loginMessage", "Credenciales no validas")
+					);
 				}
-				if (!userFound) {
-					return done(null, false, { message: "User not found" });
-				}
-				if (userFound) {
-					const userPassword = userFound.password;
-					const userEmail = userFound.email;
-					if (userPassword === password && userEmail === username) {
-						return done(null, userFound, {
-							message: "Credenciales validas",
-						});
-					} else {
-						done(null, false, {
-							message: "Credenciales no validas",
-						});
-					}
-				}
-			});
+			}
 		}
 	)
 );
@@ -42,12 +54,6 @@ const loginRouter = express.Router();
 loginRouter.get("/login", (req, res) => {
 	res.render("login");
 });
-/* 
-loginRouter.post("/login", (req, res) => {
-	const { name } = req.body;
-	req.session.username = name;
-	res.redirect("/");
-}); */
 
 loginRouter.post(
 	"/login",

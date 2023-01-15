@@ -324,3 +324,13 @@ h1 {
 	font-style: italic;
 	text-decoration: underline;
 }
+
+.errorMessage {
+	color: red;
+	font-size: 25px;
+	font-weight: 900;
+	width: 100%;
+	display: flex;
+	text-align: center;
+	justify-content: center;
+}

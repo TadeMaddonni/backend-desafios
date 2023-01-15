@@ -12,9 +12,13 @@ clientRouter.get("/", (req, res) => {
 });
 
 clientRouter.get("/productos", async (req, res) => {
-	res.render("products", {
-		products: productContainer.productos,
-	});
+	if (req.session.username) {
+		res.render("products", {
+			products: productContainer.productos,
+		});
+	} else {
+		res.redirect("/signup");
+	}
 });
 
 export { clientRouter };

@@ -10,4 +10,7 @@
 		<a class="ctaLink" href="/login">¿Ya tenes una cuenta?, Iniciá sesión</a>
 		<button>Registrarse</button>
 	</form>
+	{{#if signupMessage}}
+		<span class="errorMessage">{{signupMessage}}</span>
+	{{/if}}
 </div>

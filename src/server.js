@@ -20,7 +20,7 @@ import { productSocket } from "./routes/productSocket.js";
 import { chatSocket } from "./routes/chatSocket.js";
 import { signupRouter } from "./routes/signup.js";
 import { userModel } from "./models/UserModels.js";
-
+import flash from "connect-flash";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 mongoose.connect(
@@ -66,7 +66,12 @@ app.use(
 //Vinculación de passport con el servidor
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(flash());
+app.use((req, res, next) => {
+	app.locals.loginMessage = req.flash("loginMessage");
+	app.locals.signupMessage = req.flash("signupMessage");
+	next();
+});
 passport.serializeUser((user, done) => {
 	return done(null, user.id);
 });
