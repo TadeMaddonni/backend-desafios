@@ -318,3 +318,9 @@ h1 {
 	align-self: center;
 	justify-self: center;
 }
+
+.ctaLink {
+	color: blue !important;
+	font-style: italic;
+	text-decoration: underline;
+}

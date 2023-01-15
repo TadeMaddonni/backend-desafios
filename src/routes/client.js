@@ -7,7 +7,7 @@ clientRouter.get("/", (req, res) => {
 	if (req.session.username) {
 		res.render("home", { name: req.session.username });
 	} else {
-		res.redirect("/login");
+		res.redirect("/signup");
 	}
 });
 
