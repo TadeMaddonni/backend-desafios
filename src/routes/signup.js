@@ -29,13 +29,13 @@ passport.use(
 			};
 			const userCreated = await userModel.create(newUser);
 			if (userCreated) {
-				done(
+				return done(null, userCreated);
+			} else {
+				return done(
 					null,
 					false,
 					req.flash("signupMessage", "Ha ocurrido un error")
 				);
-			} else {
-				done(null, userCreated);
 			}
 		}
 	)
@@ -48,7 +48,7 @@ signupRouter.get("/signup", (req, res) => {
 signupRouter.post(
 	"/signup",
 	passport.authenticate("signupStrategy", {
-		failureRedirect: "/registro",
+		failureRedirect: "/signup",
 		failureMessage: true,
 	}),
 	(req, res) => {
