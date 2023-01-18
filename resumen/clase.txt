@@ -1,0 +1,29 @@
+Objeto process 
+                => Variable global de la aplicación.
+
+                => Herramienta que se encarga de ejecutar nuestra apolicación.
+
+Eventos process 
+                => process.cwd() > Current working directory.
+
+                => process.platform > Sist operativo q corre la app.
+
+                => process.pid > Id del proceso.
+
+                => process.title > Title del proceso.
+
+                => process.memoryUsage() > Uso de memoria del proceso.
+
+                => process.exit() > Termina el proceso.
+
+                => process.on("event", () => {}) > Maneja eventos del proceso.
+
+                => process.beforeExit() > Justo antes de la terminación del proyecto.
+
+                => "unchaughtException > Captura de error 
+
+                => process.stdout.write("msg") > Msg x consola
+
+                => process.stdin
+
+Y muchos mas que tambien involucran child_processes que permiten realizar opearciones no bloqueantes asi el funcionamiento del proceso principal sigue correctamente
