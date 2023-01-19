@@ -12,7 +12,7 @@ import { Contenedor } from "./clase-contenedor/clase.js";
 import { fileURLToPath } from "url";
 import { chatSchema } from "./clase-contenedor/normalizeSchema/index.js";
 import { normalize } from "normalizr";
-import { DbConfig } from "./db/dbConfig.js";
+import { DbConfig } from "./config/envConfig.js";
 import { productRouter } from "./routes/products.js";
 import { clientRouter } from "./routes/client.js";
 import { loginRouter } from "./routes/login.js";
