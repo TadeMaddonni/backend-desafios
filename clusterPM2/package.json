@@ -1,0 +1,16 @@
+{
+	"name": "clusterpm2",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "babel src/server.js -o index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-preset-env": "^1.7.0"
+	}
+}

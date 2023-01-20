@@ -1,0 +1,26 @@
+Clusters (Todavia no entiendo que es)
+
+    => Crear un grupo que este dispuesto a crear diferentes servicios para el cliente.
+
+    => Podremos crear multiples procesos => workers (Copias de un mismo servidor) y todos estaran disponibles en el mismo puerto. 
+    En caso de falla en uno. Los otros seguiran funcionando.
+
+    => Uso de subprocesos que permite aprovechar la capacidad del procesador del servidor donde se ejecute la aplicación. (cuantos mas nucleos en el procesador + procesos corriendo. 1 x núcleo [Single thread]).
+
+    => Es un módulo ya integrado en node.js
+
+    => Permite que el servidor no pare de funcionar nunca.
+
+
+Forever 
+    => forever start src/server.js
+
+    => forever list. Muestra los procesos que se están ejecutando
+
+    => Es la misma dinamica que el módulo de cluster. Crea subprocesos a medida que son necesitados para que el servidor no deje de funcionar nunca.
+
+PM2
+    => 
+
+
+Tanto Forever como PM2 son gestores de procesos (Pueden gestionar mas de una aplicación a la vez).
