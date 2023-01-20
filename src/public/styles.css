@@ -8,6 +8,7 @@
 
 body {
 	font-family: "Montserrat", sans-serif;
+	overflow-x: hidden;
 }
 input {
 	font-family: "Montserrat", sans-serif;
@@ -333,4 +334,26 @@ h1 {
 	display: flex;
 	text-align: center;
 	justify-content: center;
+}
+
+.infoContainer {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.info {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	gap: 20px;
+	align-items: center;
+}
+
+.dataInfo {
+	font-weight: bold;
+}
+
+.randomNumbersContainer {
+	max-width: 100%;
 }

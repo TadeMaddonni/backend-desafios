@@ -1,0 +1,42 @@
+import express from "express";
+import { productContainer } from "../server.js";
+import { fork } from "child_process";
+const randomRouter = express.Router();
+
+randomRouter.get("/randoms", (req, res) => {
+	console.log(req.query);
+	const randomNumbersCant = parseInt(req.query.cant);
+	console.log(randomNumbersCant);
+
+	if (randomNumbersCant) {
+		//Creamos el proceso hijo
+		const child = fork("./src/routes/process/childRandomProcess.js");
+		child.on("message", (childMsg) => {
+			//Proceso hijo listo para funcionar
+			if (childMsg === "ready") {
+				child.send({ message: "start", qty: randomNumbersCant });
+			} else {
+				res.send(
+					` Los numeros aleatorios son ${JSON.stringify(
+						childMsg.result
+					)}`
+				);
+			}
+		});
+	} else {
+		//Creamos el proceso hijo
+		const child = fork("./src/routes/process/childRandomProcess.js");
+		child.on("message", (childMsg) => {
+			//Proceso hijo listo para funcionar
+			if (childMsg === "ready") {
+				child.send({ message: "start", qty: 10000000 });
+			} else {
+				res.render("numbers", {
+					numbers: JSON.stringify(childMsg.result, null, 2),
+				});
+			}
+		});
+	}
+});
+
+export { randomRouter };

@@ -21,4 +21,18 @@ clientRouter.get("/productos", async (req, res) => {
 	}
 });
 
+clientRouter.get("/info", async (req, res) => {
+	const rss = process.memoryUsage();
+	console.log(rss);
+	const processInfo = {
+		entries: process.argv.slice(2),
+		so: process.platform,
+		node_version: process.version,
+		rss: rss,
+		path: process.cwd(),
+		id: process.pid,
+	};
+	res.render("info", { processInfo: processInfo });
+});
+
 export { clientRouter };

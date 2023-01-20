@@ -6,6 +6,7 @@ import session from "express-session";
 import path from "path";
 import passport from "passport";
 import mongoose from "mongoose";
+import flash from "connect-flash";
 import { Strategy as LocalStrategy, Strategy } from "passport-local";
 import { Server } from "socket.io";
 import { Contenedor } from "./clase-contenedor/clase.js";
@@ -20,7 +21,7 @@ import { productSocket } from "./routes/productSocket.js";
 import { chatSocket } from "./routes/chatSocket.js";
 import { signupRouter } from "./routes/signup.js";
 import { userModel } from "./models/UserModels.js";
-import flash from "connect-flash";
+import { randomRouter } from "./routes/api.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 mongoose.connect(
@@ -85,12 +86,13 @@ passport.deserializeUser((id, done) => {
 
 // Server routes
 app.use("/api/productos", productRouter);
+app.use("/api", randomRouter);
 app.use(clientRouter);
 app.use(loginRouter);
 app.use(signupRouter);
 
-const server = app.listen(8080, () => {
-	console.log("Server listening on port 8080");
+const server = app.listen(DbConfig.port, () => {
+	console.log(`Server listening on port ${DbConfig.port}`);
 	productContainer.getProducts();
 });
 
