@@ -1,0 +1,2 @@
+2023/01/25 13:56:48 [error] 9092#4364: *7 CreateFile() "C:\Users\user1\Desktop\react-app\desafioBack\servidorProxy\nginx-1.23.3/html/favicon.ico" failed (2: El sistema no puede encontrar el archivo especificado), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "http://localhost/"
+2023/01/25 14:11:01 [notice] 560#18596: signal process started

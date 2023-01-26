@@ -1,0 +1,52 @@
+Servidor proxy 
+            
+            => Recibe las peticiones de los clientes y este proxy nos ayudara a realizar ciertas caracteristicas de la aplicación.
+            
+            => Cuando el recibe una petición, recibimos la IP (Numero identificador), y en base a eso podemos restringirle ciertos permisos.
+            (Permisos administrativos, geograficos, etc.)
+
+            => Cuando el cliente "pasa la frontera" del servidor Proxy, Hacemos que la IP cambie (Falseamos la IP) y le colocamos otro un id del proxy. (Igual a una VPN).
+
+            =>Anonimiza la IP del cliente
+
+Servidor Proxy Inverso
+
+            => Se ubica entre la web y el servidor de origen, del lado del back
+
+            => Mantiene el anonimato del servidor. Mejora su seguridad.
+
+            => El cifrado SSL (HTTPS) se crea en el proxy.
+
+            => Permite distribuir la carga entre varios servidores (Balancear la carga).
+
+            => Potente caching, Podemos almacenar el contenido estatico y dinamico que desea el cliente. Permite reducir la carga del servidor de origen.
+
+            => Compresión superior, Permite comprimir las respuestas del servidor x lo que estas ocuparan un ancho de banda menor al anterior.
+
+            => Cifrar SSL, permite cifrar y descifrar las solicitudes. 
+
+            => Monitoreo y registro de trafico, Captura todas las peticiones.
+
+** Ambos pueden trabajar juntos ya que no superponen sus funcionalidades. Los clientes pueden utilzar un proxy directo y los servidores de origen un proxy inverso.**
+
+NGINX
+
+    => Nos permite crear un servidor proxy, muy parecido a nodeJS, orientado a eventos.
+
+    => Redirige las solicitudes de los clientes
+
+    => Tiene dos procesos, el master (Monitoreo) y el worker
+
+    => ./nginex.exe -s stop -> Apagado Rápido
+
+    => ./nginex.exe -s quit -> Cierre mas elegante
+
+    => ./nginex.exe -s reload -> Reiniciar el servidor (Cambios de cfgs)
+
+    => ./nginex.exe -s reopen -> Reabrir logs de archivos
+
+COMANDOS
+
+    => Ejectutar el servidor en modo fork con pm2 -> pm2 start server.js --name="servidor1" 
+    
+    => Ejecutar el servidor en modo cluster en el puerto 8082 -> pm2 start server.js --name="servidor2" -i max 
