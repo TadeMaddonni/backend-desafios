@@ -4,9 +4,7 @@ import { fork } from "child_process";
 const randomRouter = express.Router();
 
 randomRouter.get("/randoms", (req, res) => {
-	console.log(req.query);
 	const randomNumbersCant = parseInt(req.query.cant);
-	console.log(randomNumbersCant);
 
 	if (randomNumbersCant) {
 		//Creamos el proceso hijo

@@ -6,9 +6,11 @@ dotenv.config();
 const options = {
 	default: {
 		port: 8000,
+		mode: "fork",
 	},
 	alias: {
 		p: "port",
+		m: "mode",
 	},
 };
 
@@ -19,7 +21,7 @@ const DbConfig = {
 		url: process.env.DATABASE_URL || "Base de datos no existente",
 	},
 	port: args.port,
-	mode: args.mode || "dev",
+	mode: args.mode,
 };
 
 export { DbConfig };

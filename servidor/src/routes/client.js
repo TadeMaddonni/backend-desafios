@@ -1,6 +1,6 @@
 import express from "express";
 import { productContainer } from "../server.js";
-
+import os from "os";
 const clientRouter = express.Router();
 
 clientRouter.get("/", (req, res) => {
@@ -22,8 +22,9 @@ clientRouter.get("/productos", async (req, res) => {
 });
 
 clientRouter.get("/info", async (req, res) => {
+	const numCpus = os.cpus().length; // Numero de procesadores
+
 	const rss = process.memoryUsage();
-	console.log(rss);
 	const processInfo = {
 		entries: process.argv.slice(2),
 		so: process.platform,
@@ -31,6 +32,7 @@ clientRouter.get("/info", async (req, res) => {
 		rss: rss,
 		path: process.cwd(),
 		id: process.pid,
+		cpu_number: numCpus,
 	};
 	res.render("info", { processInfo: processInfo });
 });

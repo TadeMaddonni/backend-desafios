@@ -7,12 +7,12 @@ import path from "path";
 import passport from "passport";
 import mongoose from "mongoose";
 import flash from "connect-flash";
-import { Strategy as LocalStrategy, Strategy } from "passport-local";
+import cluster from "cluster";
+import os from "os";
+
 import { Server } from "socket.io";
 import { Contenedor } from "./clase-contenedor/clase.js";
 import { fileURLToPath } from "url";
-import { chatSchema } from "./clase-contenedor/normalizeSchema/index.js";
-import { normalize } from "normalizr";
 import { DbConfig } from "./config/envConfig.js";
 import { productRouter } from "./routes/products.js";
 import { clientRouter } from "./routes/client.js";
@@ -22,8 +22,9 @@ import { chatSocket } from "./routes/chatSocket.js";
 import { signupRouter } from "./routes/signup.js";
 import { userModel } from "./models/UserModels.js";
 import { randomRouter } from "./routes/api.js";
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+mongoose.set("strictQuery", false);
 mongoose.connect(
 	DbConfig.mongoAtlas.url,
 	{
@@ -91,24 +92,36 @@ app.use(clientRouter);
 app.use(loginRouter);
 app.use(signupRouter);
 
-const server = app.listen(DbConfig.port, () => {
-	console.log(`Server listening on port ${DbConfig.port}`);
-	productContainer.getProducts();
-});
+//Modo cluster o fork
+if (DbConfig.mode === "cluster" && cluster.isPrimary) {
+	console.log("Modo cluster");
+	const numCpus = os.cpus().length; // Numero de procesadores
 
-// Creación servidor websocker
-const io = new Server(server);
+	for (let i = 0; i < numCpus; i++) {
+		cluster.fork();
+	}
+} else {
+	const server = app.listen(DbConfig.port, () => {
+		console.log(
+			`Server listening on port ${DbConfig.port} on ${process.pid}`
+		);
+		productContainer.getProducts();
+	});
 
-io.on("connection", async (socket) => {
-	console.log("Nuevo cliente conectado");
+	// Creación servidor websocker
+	const io = new Server(server);
 
-	productSocket(socket, io.sockets);
-	chatSocket(socket, io.sockets);
-});
+	io.on("connection", async (socket) => {
+		console.log("Nuevo cliente conectado");
+
+		productSocket(socket, io.sockets);
+		chatSocket(socket, io.sockets);
+	});
+}
 
 /*
-LINK FOTO PARA HACER MAS RAPIDO
-
-https://i.postimg.cc/76b2Ld3b/coca-cola.png
-
-*/
+	LINK FOTO PARA HACER MAS RAPIDO
+	
+	https://i.postimg.cc/76b2Ld3b/coca-cola.png
+	
+	*/

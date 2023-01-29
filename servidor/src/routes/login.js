@@ -16,7 +16,7 @@ passport.use(
 		async (req, username, password, done) => {
 			//Buscar el usuario dentro de la base de datos
 			const user = await userModel.findOne({ email: username });
-			console.log(user);
+
 			if (!user) {
 				return done(
 					null,
@@ -30,15 +30,12 @@ passport.use(
 
 				const passwordsMatch = comparePasswords(password, userPassword);
 				if (passwordsMatch) {
-					console.log("User Encontrado");
 					return done(
 						null,
 						user,
 						req.flash("loginMessage", "Credenciales validas")
 					);
 				} else {
-					console.log("Credenciales no validas");
-
 					done(
 						null,
 						false,
@@ -69,7 +66,6 @@ loginRouter.post(
 );
 
 loginRouter.get("/logout", (req, res) => {
-	console.log(req.session);
 	const name = req.session.username;
 
 	req.session.destroy((err) => {
