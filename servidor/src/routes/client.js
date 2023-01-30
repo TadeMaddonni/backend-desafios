@@ -1,6 +1,7 @@
 import express from "express";
 import { productContainer } from "../server.js";
 import os from "os";
+import { DbConfig } from "../config/envConfig.js";
 const clientRouter = express.Router();
 
 clientRouter.get("/", (req, res) => {
@@ -13,8 +14,10 @@ clientRouter.get("/", (req, res) => {
 
 clientRouter.get("/productos", async (req, res) => {
 	if (req.session.username) {
+		console.log(` server ${DbConfig.port} responding`);
 		res.render("products", {
 			products: productContainer.productos,
+			sever: DbConfig.port,
 		});
 	} else {
 		res.redirect("/signup");

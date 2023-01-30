@@ -1,9 +1,11 @@
 import express from "express";
+import { DbConfig } from "../config/envConfig.js";
 import { productContainer } from "../server.js";
 
 const productRouter = express.Router();
 
 productRouter.get("/", async (req, res) => {
+	console.log(`Server ${DbConfig.port}Responding `);
 	const productos = await productContainer.productos;
 	res.send(productos);
 });

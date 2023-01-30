@@ -27,7 +27,7 @@ randomRouter.get("/randoms", (req, res) => {
 		child.on("message", (childMsg) => {
 			//Proceso hijo listo para funcionar
 			if (childMsg === "ready") {
-				child.send({ message: "start", qty: 10000000 });
+				child.send({ message: "start", qty: 50000000 });
 			} else {
 				res.render("numbers", {
 					numbers: JSON.stringify(childMsg.result, null, 2),
