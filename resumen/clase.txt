@@ -1,0 +1,29 @@
+Artillery
+    
+    => Test de carga a servidores
+    
+    => Tests de performance
+    
+    => (Pruebas de carga o pruebas funcionales)
+
+    => artillery quick --count 100 -n 20 http://localhost:8080?max=100000 > archivoDeResultados.txt  
+
+Profiling
+
+    => Analisis de rendimiento
+
+    => Averiguar el tiempo de respuesta.
+
+    => 
+
+
+Curl 
+
+    => Simular peticiones http a través de la CLI.
+
+    => Utilizada para transmitir información (Cuando es utilizada en internet).
+
+
+Autocannon y 0x 
+
+    => 
