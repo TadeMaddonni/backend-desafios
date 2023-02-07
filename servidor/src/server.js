@@ -22,6 +22,7 @@ import { chatSocket } from "./routes/chatSocket.js";
 import { signupRouter } from "./routes/signup.js";
 import { userModel } from "./models/UserModels.js";
 import { randomRouter } from "./routes/api.js";
+import { logger } from "./logger/logger.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 mongoose.set("strictQuery", false);
@@ -76,6 +77,10 @@ app.use((req, res, next) => {
 });
 passport.serializeUser((user, done) => {
 	return done(null, user.id);
+});
+app.use((req, res, next) => {
+	logger.info(`Request recibida en la ruta: ${req.url}`);
+	next();
 });
 
 passport.deserializeUser((id, done) => {

@@ -4,6 +4,7 @@ import { userModel } from "../models/UserModels.js";
 import { Strategy as LocalStrategy, Strategy } from "passport-local";
 import flash from "connect-flash";
 import { comparePasswords } from "../utils/passwordEncrypt.js";
+import { logger } from "../logger/logger.js";
 
 passport.use(
 	"loginStrategy",
@@ -36,6 +37,7 @@ passport.use(
 						req.flash("loginMessage", "Credenciales validas")
 					);
 				} else {
+					logger.error("Credenciales de login no validas");
 					done(
 						null,
 						false,

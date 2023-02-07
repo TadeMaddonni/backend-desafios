@@ -1,6 +1,7 @@
 import express from "express";
 import passport from "passport";
 import { Strategy as LocalStrategy, Strategy } from "passport-local";
+import { logger } from "../logger/logger.js";
 import { userModel } from "../models/UserModels.js";
 import { encryptPassword } from "../utils/passwordEncrypt.js";
 
@@ -17,6 +18,7 @@ passport.use(
 			//Buscar el usuario dentro de la base de datos
 			const user = await userModel.findOne({ email: username });
 			if (user) {
+				logger.error("Usuario ya existente");
 				return done(
 					null,
 					false,
@@ -31,6 +33,7 @@ passport.use(
 			if (userCreated) {
 				return done(null, userCreated);
 			} else {
+				logger.error("Ha ocurrido un error durante el registro");
 				return done(
 					null,
 					false,

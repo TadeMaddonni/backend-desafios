@@ -1,4 +1,4 @@
-export function getNumbers(quantity) {
+export async function getNumbers(quantity) {
 	//create an empty array to store the generated numbers
 	let numbers = [];
 	//create an empty object to store the number of times each number is repeated

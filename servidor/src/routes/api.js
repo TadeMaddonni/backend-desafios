@@ -1,13 +1,21 @@
 import express from "express";
 import { productContainer } from "../server.js";
 import { fork } from "child_process";
+import { getNumbers } from "../utils/getRandomNumbers.js";
+import { logger } from "../logger/logger.js";
+
 const randomRouter = express.Router();
 
-randomRouter.get("/randoms", (req, res) => {
+randomRouter.get("/randoms", async (req, res) => {
 	const randomNumbersCant = parseInt(req.query.cant);
 
 	if (randomNumbersCant) {
-		//Creamos el proceso hijo
+		logger.info("Calculando numeros..");
+		const numbers = await getNumbers(randomNumbersCant);
+		console.log(numbers);
+		res.render("numbers", { numbers: JSON.stringify(numbers, null, 2) });
+
+		/* 		//Creamos el proceso hijo
 		const child = fork("./src/routes/process/childRandomProcess.js");
 		child.on("message", (childMsg) => {
 			//Proceso hijo listo para funcionar
@@ -20,9 +28,11 @@ randomRouter.get("/randoms", (req, res) => {
 					)}`
 				);
 			}
-		});
+		}); */
 	} else {
-		//Creamos el proceso hijo
+		logger.error("Numero no valido");
+		res.render("numbers", { numbers: "No has ingresado un numero válido" });
+		/* 		//Creamos el proceso hijo
 		const child = fork("./src/routes/process/childRandomProcess.js");
 		child.on("message", (childMsg) => {
 			//Proceso hijo listo para funcionar
@@ -33,7 +43,7 @@ randomRouter.get("/randoms", (req, res) => {
 					numbers: JSON.stringify(childMsg.result, null, 2),
 				});
 			}
-		});
+		}); */
 	}
 });
 
