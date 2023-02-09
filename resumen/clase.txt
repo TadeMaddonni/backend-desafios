@@ -1,0 +1,41 @@
+Amazon Web Services
+
+    => Precisa una tarjeta de credito.  
+    
+    => AWS Educate es el servicio de formación que ofrece AWS para estudiantes.
+
+    => Crear cuenta en AWS
+
+        => Ingresar al siguiente enlace: https://aws.amazon.com/es/getting-started/hands-on/deploy-nodejs-web-app/
+
+        => Crear una cuenta siguiendo los pasos.
+
+        => 
+
+    => Elastic Beanstalk
+
+        => Aprovisionamiento de la capacidad.
+
+        => Balanceo de carga. (Distribuye las peticiones en las diferentes instancias de la aplicación.)
+
+        => Auto escalamientod el codigo. (Crea nuevas instancias si alguna falla, maneja la cantidad de recursos necesarias para el funcionamiento correcto del código.)
+    
+    => Amazon DynamoDB 
+
+        =>  Bases de datos no relacionales (MongoDB style).
+
+    =>  Crear aplicación a través de Elastic Beanstalk
+
+        => Dirigirse a Create Application
+
+        => Seguir los pasos 
+
+        => En la sección de plataforma seleccionamos "node.js"
+
+        => Luego seleccionamos aplicacion de muestra.
+
+        => Una vez creada la app
+
+        => Debemos añadir politicas dentro de la sección permisos
+
+        
