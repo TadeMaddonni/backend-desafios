@@ -57,7 +57,7 @@ app.use(cookieParser());
 app.use(
 	session({
 		store: MongoStore.create({
-			mongoUrl: DbConfig.mongoAtlas.url,
+			mongoUrl: DbConfig.DATABASE_URL,
 			ttl: 600,
 		}),
 		secret: "sessionSecreta",
