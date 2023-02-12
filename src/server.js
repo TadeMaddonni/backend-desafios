@@ -27,7 +27,7 @@ import { logger } from "./logger/logger.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 mongoose.set("strictQuery", false);
 mongoose.connect(
-	DbConfig.mongoAtlas.url,
+	DbConfig.DATABASE_URL,
 	{
 		useNewUrlParser: true,
 		useUnifiedTopology: true,

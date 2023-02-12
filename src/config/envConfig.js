@@ -17,9 +17,8 @@ const options = {
 const args = parseArgs(process.argv.slice(2), options);
 
 const DbConfig = {
-	mongoAtlas: {
-		url: process.env.DATABASE_URL || "Base de datos no existente",
-	},
+	DATABASE_URL: process.env.DATABASE_URL || "Base de datos no existente",
+
 	port: process.env.PORT || 8080,
 	mode: args.mode,
 };
