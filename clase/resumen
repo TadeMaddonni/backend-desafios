@@ -1,0 +1,28 @@
+Nodemailer
+=> Envío de correos electronicos
+
+    => Gran foco en la seguridad.
+
+    => Nos logueamos y funciona creo.
+
+Servidor Ethereal
+
+    =>  Simulación de correo.
+
+Configurar nodemailer con Gmail
+
+    => Myaccount.google.com/security
+
+    => App Paswords -> Create one (I think) selecting the app and device we are using.
+
+    => Remplazar el mail y la contraseña en al configuración
+
+    => Remplazar el host por el de gmail.
+
+TWLIO SMS
+
+    => Es una API que actua mediante WebHook
+
+    => Actua como intermediario, a la cual se le envia una solicitud POST  a la url que queramos cada vez que se reciba un mensaje y responder en esa misma solicitud.
+
+    => Registramos -> Nombre, contraseña, etc. Colocamos una prueba gratuita.
