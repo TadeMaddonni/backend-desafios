@@ -28,10 +28,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 mongoose.set("strictQuery", false);
 mongoose.connect(
 	DbConfig.DATABASE_URL,
-	// {
-	// 	useNewUrlParser: true,
-	// 	useUnifiedTopology: true,
-	// },
+	{
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	},
 	(error) => {
 		if (error) console.log("Conexion fallida");
 		console.log("base de datos conectada correctamente");
