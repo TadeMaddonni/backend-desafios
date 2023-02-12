@@ -20,7 +20,7 @@ const DbConfig = {
 	mongoAtlas: {
 		url: process.env.DATABASE_URL || "Base de datos no existente",
 	},
-	port: args.port,
+	port: process.env.PORT || 8080,
 	mode: args.mode,
 };
 
