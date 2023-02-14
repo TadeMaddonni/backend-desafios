@@ -33,8 +33,11 @@ mongoose.connect(
 		useUnifiedTopology: true,
 	},
 	(error) => {
-		if (error) console.log("Conexion fallida");
-		console.log("base de datos conectada correctamente");
+		if (error) {
+			console.log("Conexion fallida");
+		} else {
+			console.log("base de datos conectada correctamente");
+		}
 	}
 );
 
