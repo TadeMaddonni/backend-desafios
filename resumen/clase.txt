@@ -1,0 +1,40 @@
+Inyección
+
+    => Los atacantes pueden manipular, modificar u obtener la información de la base de datos. Por eso deben estar bien protegidas.
+
+ Perdidas de autenticación
+
+    => Se pueden compremeter usuarios, contraseñas, token de sesiones, etc.
+
+    => Solo deben acceder a una cuenta de administrador para joder el sistema.
+
+Exposición de datos sensibles
+
+    => Se recomienda la encriptación
+
+    =>  Hay que aportar más metodos adicionales de seguridad
+
+Entidades externas XML
+
+    => Procesadores antiguos a veces permiten ataques de tipo XXE, a través de las entidades externas los archivos internos pueden ser expuestos.
+
+Pérdida de control de acceso
+
+    => Los usuarios pueden acceder a recursos que no deberían tener acceso.
+
+=> Configuración de seguridad incorrecta
+
+    => Cabceceras HTTP mal configuradas, mensajes con contenido sensible, falta de parches y actualizaciones, componentes desactualizados.
+
+
+=>  Secuencia de comandos en sitios cruzados (XSS)
+
+    => Una aplicación toma datos no confiables, y los envia al navegador web sin una validación y codificación apropiada.
+
+    => Permiten ejecutar comandos en el navegador de la victima
+
+=>  Componentes con vulnerabilidades conocidas
+
+    => Debilidades de librerias o paquetes pueden expandirsea a nuestro código. Por eso hay que verificar errores y la fiabilidad de los paquetes.
+
+=> etc etc
