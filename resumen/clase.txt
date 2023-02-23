@@ -1,0 +1,16 @@
+Arquitectura de capas
+
+    => Cada capa tiene una responsabilidad específica.
+
+    => Cada capa se comunica con la capa inmediatamente inferior. (si de la 1 hay que comunicar a la 3. Pasa por la 2)
+
+    => {Capa 1: De presentación (Frontend)}
+
+    => {Capa 2: Del navegador (API, ruteo)}
+
+    => {Capa 3: Lógica de servicio (Lógica del negocio)}
+
+    => {Capa 4: Capa de base de datos (Persistencia, BBDD)}
+
+
+    =>  datos => servicios => controlador => rutas => frontend
