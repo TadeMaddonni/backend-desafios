@@ -1,0 +1,19 @@
+Pasos del patron DAO
+
+    => nuestra aplicacion encapsula informacion en un DTO
+
+    => El DAO toma ese dto y extrae la info y construye una logica
+
+    => luego es enviado a la fuente de datos 
+
+    =>  Data Access Object
+
+    =>  Data Transfer Object
+
+    =>  Data Source Object
+
+Abstract factory or patron factory
+
+    => es un patron de diseño creacional que permite a una clase crear objetos que pertenecen a una familia de clases relacionadas o dependientes sin especificar sus clases concretas.
+
+    => 
