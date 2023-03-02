@@ -1,10 +1,11 @@
 import express from "express";
-import passport from "passport";
-import { userModel } from "../models/UserModels.js";
+import { userModel } from "../../DB/models/UserModels.js";
 import { Strategy as LocalStrategy, Strategy } from "passport-local";
 import flash from "connect-flash";
-import { comparePasswords } from "../utils/passwordEncrypt.js";
-import { logger } from "../logger/logger.js";
+import { comparePasswords } from "../../utils/passwordEncrypt.js";
+import { logger } from "../../logger/logger.js";
+import { loginController } from "../../controllers/login.controller.js";
+import passport from "passport";
 
 passport.use(
 	"loginStrategy",
@@ -48,32 +49,20 @@ passport.use(
 		}
 	)
 );
-const loginRouter = express.Router();
 
-loginRouter.get("/login", (req, res) => {
-	res.render("login");
-});
+const router = express.Router();
 
-loginRouter.post(
-	"/login",
+router.get("/", loginController.renderLogin);
+
+router.post(
+	"/",
 	passport.authenticate("loginStrategy", {
 		failureRedirect: "/login",
 		failureMessage: true,
 	}),
-	(req, res) => {
-		const { email } = req.body;
-		req.session.username = email;
-		res.redirect("/");
-	}
+	loginController.login
 );
 
-loginRouter.get("/logout", (req, res) => {
-	const name = req.session.username;
+router.get("/logout", loginController.logout);
 
-	req.session.destroy((err) => {
-		if (err) return res.redirect("/");
-		res.render("logout", { name: name });
-	});
-});
-
-export { loginRouter };
+export { router as loginRouter };

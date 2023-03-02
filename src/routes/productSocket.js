@@ -1,4 +1,4 @@
-import { productContainer } from "../server.js";
+import { productContainer } from "../DB/managers/index.js";
 
 const productSocket = async (socket, sockets) => {
 	sockets.emit("products", productContainer.productos);

@@ -4,14 +4,17 @@ import { faker } from "@faker-js/faker";
 import { fileURLToPath } from "url";
 import path from "path";
 import { normalize, denormalize, schema } from "normalizr";
-import { chatSchema, messageSchema } from "./normalizeSchema/index.js";
+import {
+	chatSchema,
+	messageSchema,
+} from "../../utils/normalizeSchema/index.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const { commerce, image } = faker;
 
-class Contenedor {
+class MemoryContainer {
 	getProducts() {
 		let products = [];
 		for (let i = 0; i < 5; i++) {
@@ -30,19 +33,12 @@ class Contenedor {
 		this.logged = false;
 	}
 
-	getMessages() {
-		this.messages = JSON.parse(
-			fs.readFileSync(__dirname + "/chat/chat.txt")
-		);
-		return this.messages;
-	}
-
-	addProductToDb(producto) {
+	async addProductToDb(producto) {
 		this.productos.push(producto);
 		return "Product added correctly";
 	}
 
-	addProduct(product) {
+	async addProduct(product) {
 		const itExists = this.productos.some(
 			(prod) => prod.name === product.name
 		);
@@ -61,20 +57,13 @@ class Contenedor {
 				};
 				this.addProductToDb(producto);
 				this.getProducts();
+				console.log("producto Agregado");
 			} else {
 				return "Producto incorrecto";
 			}
 		} else {
 			return "Already exits";
 		}
-	}
-
-	writeChat() {
-		fs.writeFileSync(
-			__dirname + "/chat/chat.txt",
-			JSON.stringify(this.messages, null, 2),
-			"utf-8"
-		);
 	}
 
 	async addMessage(message) {
@@ -91,14 +80,20 @@ class Contenedor {
 			return;
 		}
 	}
-
-	login() {
-		console.log("logged in");
+	async writeChat() {
+		fs.writeFileSync(
+			__dirname + "/chat/chat.txt",
+			JSON.stringify(this.messages, null, 2),
+			"utf-8"
+		);
 	}
 
-	logout() {
-		console.log("logged out");
+	async getMessages() {
+		this.messages = JSON.parse(
+			fs.readFileSync(__dirname + "/chat/chat.txt")
+		);
+		return this.messages;
 	}
 }
 
-export { Contenedor };
+export { MemoryContainer };

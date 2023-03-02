@@ -1,11 +1,12 @@
 import express from "express";
 import passport from "passport";
 import { Strategy as LocalStrategy, Strategy } from "passport-local";
-import { logger } from "../logger/logger.js";
-import { userModel } from "../models/UserModels.js";
-import { encryptPassword } from "../utils/passwordEncrypt.js";
+import { signupController } from "../../controllers/signup.controller.js";
+import { logger } from "../../logger/logger.js";
+import { userModel } from "../../DB/models/UserModels.js";
+import { encryptPassword } from "../../utils/passwordEncrypt.js";
 
-const signupRouter = express.Router();
+const router = express.Router();
 
 passport.use(
 	"signupStrategy",
@@ -44,19 +45,15 @@ passport.use(
 	)
 );
 
-signupRouter.get("/signup", (req, res) => {
-	res.render("signup");
-});
+router.get("/", signupController.renderSignup);
 
-signupRouter.post(
-	"/signup",
+router.post(
+	"/",
 	passport.authenticate("signupStrategy", {
 		failureRedirect: "/signup",
 		failureMessage: true,
 	}),
-	(req, res) => {
-		res.redirect("/login");
-	}
+	signupController.redirectLogin
 );
 
-export { signupRouter };
+export { router as signupRouter };

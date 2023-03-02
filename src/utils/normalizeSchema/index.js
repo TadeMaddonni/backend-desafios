@@ -1,5 +1,5 @@
 import { normalize, schema } from "normalizr";
-import { productContainer } from "../../server.js";
+import { productContainer } from "../../DB/managers/index.js";
 
 const authorSchema = new schema.Entity("authors");
 const messageSchema = new schema.Entity("messages", {

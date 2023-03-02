@@ -11,43 +11,25 @@ import cluster from "cluster";
 import os from "os";
 
 import { Server } from "socket.io";
-import { Contenedor } from "./clase-contenedor/clase.js";
 import { fileURLToPath } from "url";
 import { DbConfig } from "./config/envConfig.js";
-import { productRouter } from "./routes/products.js";
-import { clientRouter } from "./routes/client.js";
-import { loginRouter } from "./routes/login.js";
+import { productContainer } from "./DB/managers/index.js";
 import { productSocket } from "./routes/productSocket.js";
 import { chatSocket } from "./routes/chatSocket.js";
-import { signupRouter } from "./routes/signup.js";
-import { userModel } from "./models/UserModels.js";
-import { randomRouter } from "./routes/api.js";
+import { userModel } from "./DB/models/UserModels.js";
 import { logger } from "./logger/logger.js";
+import { router } from "./routes/index.js";
+import { connectMongo } from "./config/database/dbConnection.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-mongoose.set("strictQuery", false);
-mongoose.connect(
-	DbConfig.DATABASE_URL,
-	{
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	},
-	(error) => {
-		if (error) {
-			console.log("Conexion fallida");
-		} else {
-			console.log("base de datos conectada correctamente");
-		}
-	}
-);
+
+connectMongo();
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
-
-export const productContainer = new Contenedor();
 
 //Configuracion template engine handlebars
 app.engine(".hbs", handlebars.engine({ extname: ".hbs" }));
@@ -78,14 +60,13 @@ app.use((req, res, next) => {
 	app.locals.signupMessage = req.flash("signupMessage");
 	next();
 });
-passport.serializeUser((user, done) => {
-	return done(null, user.id);
-});
 app.use((req, res, next) => {
 	logger.info(`Request recibida en la ruta: ${req.url}`);
 	next();
 });
-
+passport.serializeUser((user, done) => {
+	return done(null, user.id);
+});
 passport.deserializeUser((id, done) => {
 	// Con el ID buscamos al usuario en la base de datos, previamente serializado
 	userModel.findById(id, (err, userFound) => {
@@ -94,11 +75,7 @@ passport.deserializeUser((id, done) => {
 });
 
 // Server routes
-app.use("/api/productos", productRouter);
-app.use("/api", randomRouter);
-app.use(clientRouter);
-app.use(loginRouter);
-app.use(signupRouter);
+app.use(router);
 
 //Modo cluster o fork
 if (DbConfig.mode === "cluster" && cluster.isPrimary) {
@@ -126,10 +103,3 @@ if (DbConfig.mode === "cluster" && cluster.isPrimary) {
 		chatSocket(socket, io.sockets);
 	});
 }
-
-/*
-	LINK FOTO PARA HACER MAS RAPIDO
-	
-	https://i.postimg.cc/76b2Ld3b/coca-cola.png
-	
-	*/
