@@ -1,5 +1,4 @@
 import { DbConfig } from "../config/envConfig.js";
-import { productContainer } from "../DB/managers/index.js";
 import os from "os";
 import { logger } from "../logger/logger.js";
 import { ProductServices } from "../services/products.services.js";

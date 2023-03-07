@@ -1,5 +1,4 @@
-import { productContainer } from "../DB/managers/index.js";
-
+import { productContainer } from "../config/database/dbManager.js";
 class ProductServices {
 	static async getProducts() {
 		return await productContainer.productos;

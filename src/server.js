@@ -5,25 +5,18 @@ import MongoStore from "connect-mongo";
 import session from "express-session";
 import path from "path";
 import passport from "passport";
-import mongoose from "mongoose";
-import flash from "connect-flash";
 import cluster from "cluster";
 import os from "os";
 
 import { Server } from "socket.io";
 import { fileURLToPath } from "url";
 import { DbConfig } from "./config/envConfig.js";
-import { productContainer } from "./DB/managers/index.js";
 import { productSocket } from "./routes/productSocket.js";
 import { chatSocket } from "./routes/chatSocket.js";
 import { userModel } from "./DB/models/UserModels.js";
 import { logger } from "./logger/logger.js";
 import { router } from "./routes/index.js";
-import { connectMongo } from "./config/database/dbConnection.js";
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-connectMongo();
 
 const app = express();
 
@@ -54,12 +47,7 @@ app.use(
 //Vinculación de passport con el servidor
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
-app.use((req, res, next) => {
-	app.locals.loginMessage = req.flash("loginMessage");
-	app.locals.signupMessage = req.flash("signupMessage");
-	next();
-});
+
 app.use((req, res, next) => {
 	logger.info(`Request recibida en la ruta: ${req.url}`);
 	next();
@@ -86,6 +74,7 @@ if (DbConfig.mode === "cluster" && cluster.isPrimary) {
 		cluster.fork();
 	}
 } else {
+	console.log("modo fork");
 	const server = app.listen(DbConfig.port, () => {
 		console.log(
 			`Server listening on port ${DbConfig.port} on ${process.pid}`

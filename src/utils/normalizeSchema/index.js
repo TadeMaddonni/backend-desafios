@@ -1,5 +1,10 @@
 import { normalize, schema } from "normalizr";
-import { productContainer } from "../../DB/managers/index.js";
+import { DbConfig } from "../../config/envConfig.js";
+import { getDbApi } from "../../DB/index.js";
+import { chatServices } from "../../services/chat.services.js";
+
+const managers = await getDbApi(DbConfig.DB_TYPE);
+const { productContainer } = managers;
 
 const authorSchema = new schema.Entity("authors");
 const messageSchema = new schema.Entity("messages", {
@@ -17,7 +22,7 @@ const normalizeData = (data) => {
 	return normalizedData;
 };
 export const normalizeMessages = async () => {
-	const messages = await productContainer.getMessages();
+	const messages = await chatServices.getMessages();
 	const normalizedMessages = normalizeData(messages);
 	return normalizedMessages;
 };

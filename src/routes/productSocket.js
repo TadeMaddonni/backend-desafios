@@ -1,12 +1,12 @@
-import { productContainer } from "../DB/managers/index.js";
+import { ProductServices } from "../services/products.services.js";
 
 const productSocket = async (socket, sockets) => {
-	sockets.emit("products", productContainer.productos);
+	sockets.emit("products", ProductServices.productos);
 
 	socket.on("newProduct", async (data) => {
-		productContainer.addProduct(data);
+		ProductServices.addProduct(data);
 
-		socket.emit("products", productContainer.productos);
+		socket.emit("products", ProductServices.productos);
 	});
 };
 
