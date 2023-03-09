@@ -1,4 +1,6 @@
-import { productContainer } from "../config/database/dbManager.js";
+import { productContainer, userContainer } from "../server.js";
+
+// onst { productContainer, userContainer } = getMangaers();
 class ProductServices {
 	static async getProducts() {
 		return await productContainer.productos;

@@ -20,11 +20,7 @@ passport.use(
 			const user = await userModel.findOne({ email: username });
 
 			if (!user) {
-				return done(
-					null,
-					false,
-					req.flash("loginMessage", "Usuario no encontrado")
-				);
+				return done(null, false);
 			}
 			if (user) {
 				const userPassword = user.password;
@@ -32,18 +28,10 @@ passport.use(
 
 				const passwordsMatch = comparePasswords(password, userPassword);
 				if (passwordsMatch) {
-					return done(
-						null,
-						user,
-						req.flash("loginMessage", "Credenciales validas")
-					);
+					return done(null, user);
 				} else {
 					logger.error("Credenciales de login no validas");
-					done(
-						null,
-						false,
-						req.flash("loginMessage", "Credenciales no validas")
-					);
+					done(null, false);
 				}
 			}
 		}

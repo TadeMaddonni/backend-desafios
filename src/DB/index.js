@@ -2,9 +2,12 @@ import { DbConfig } from "../config/envConfig.js";
 import { MyMongoClient } from "./clients/mongoClient.js";
 import { MemoryContainer } from "./managers/memory.manager.js";
 import { userModel } from "./models/UserModels.js";
-
+import { MemoryDaoContainer } from "./daos/memoryDao.js";
+import { UserMongoDao } from "./daos/usersMongoDao.js";
+import { SqlDao } from "./daos/sqlDao.js";
 //export const productContainer = await new MemoryContainer();
-const getDbApi = async (dbType) => {
+
+export const getDbApi = async (dbType) => {
 	let productContainer;
 	let userContainer;
 	switch (dbType) {
@@ -13,8 +16,8 @@ const getDbApi = async (dbType) => {
 
 			await myClient.connect(DbConfig.DATABASE_URL);
 
-			const { MemoryDaoContainer } = await import("./daos/memoryDao.js");
-			const { UserMongoDao } = await import("./daos/usersMongoDao.js");
+			/* 			const { MemoryDaoContainer } = await import("./daos/memoryDao.js");
+			const { UserMongoDao } = await import("./daos/usersMongoDao.js"); */
 
 			productContainer = new MemoryDaoContainer();
 			userContainer = new UserMongoDao(userModel);
@@ -26,12 +29,8 @@ const getDbApi = async (dbType) => {
 
 			productContainer = await new SqlDaoContainer();
 			userContainer = await new UserMongoDao(userModel);
-
 			break;
 	}
 
 	return { productContainer, userContainer };
 };
-
-getDbApi(DbConfig.DB_TYPE);
-export { getDbApi };

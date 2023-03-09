@@ -16,6 +16,7 @@ import { chatSocket } from "./routes/chatSocket.js";
 import { userModel } from "./DB/models/UserModels.js";
 import { logger } from "./logger/logger.js";
 import { router } from "./routes/index.js";
+import { getDbApi } from "./DB/index.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
@@ -31,7 +32,7 @@ app.set("view engine", ".hbs");
 
 // APP USES
 app.use(cookieParser());
-
+console.log("llega 1");
 app.use(
 	session({
 		store: MongoStore.create({
@@ -64,6 +65,8 @@ passport.deserializeUser((id, done) => {
 
 // Server routes
 app.use(router);
+const { productContainer, userContainer } = await getDbApi(DbConfig.DB_TYPE);
+console.log("llega 2");
 
 //Modo cluster o fork
 if (DbConfig.mode === "cluster" && cluster.isPrimary) {
@@ -75,11 +78,11 @@ if (DbConfig.mode === "cluster" && cluster.isPrimary) {
 	}
 } else {
 	console.log("modo fork");
-	const server = app.listen(DbConfig.port, () => {
+	const server = app.listen(DbConfig.port, async () => {
 		console.log(
 			`Server listening on port ${DbConfig.port} on ${process.pid}`
 		);
-		productContainer.getProducts();
+		await productContainer.getProducts();
 	});
 
 	// Creación servidor websocker
@@ -92,3 +95,5 @@ if (DbConfig.mode === "cluster" && cluster.isPrimary) {
 		chatSocket(socket, io.sockets);
 	});
 }
+
+export { productContainer, userContainer };

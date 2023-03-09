@@ -1,10 +1,9 @@
 import { normalize, schema } from "normalizr";
 import { DbConfig } from "../../config/envConfig.js";
-import { getDbApi } from "../../DB/index.js";
+import { productContainer, userContainer } from "../../server.js";
 import { chatServices } from "../../services/chat.services.js";
 
-const managers = await getDbApi(DbConfig.DB_TYPE);
-const { productContainer } = managers;
+// const { productContainer, userContainer } = await getMangaers();
 
 const authorSchema = new schema.Entity("authors");
 const messageSchema = new schema.Entity("messages", {
