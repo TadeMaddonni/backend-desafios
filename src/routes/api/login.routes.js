@@ -18,6 +18,7 @@ passport.use(
 		async (req, username, password, done) => {
 			//Buscar el usuario dentro de la base de datos
 			const user = await userModel.findOne({ email: username });
+			logger.info("Usuario encontrado: " + username);
 
 			if (!user) {
 				return done(null, false);

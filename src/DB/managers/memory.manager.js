@@ -58,6 +58,7 @@ class MemoryContainer {
 				this.addProductToDb(producto);
 				this.getProducts();
 				console.log("producto Agregado");
+				return "Producto agregado correctamente";
 			} else {
 				return "Producto incorrecto";
 			}

@@ -11,8 +11,10 @@ class UserMongoManager {
 
 	async getUser(username) {
 		try {
+			console.log(username);
 			const user = await this.model.findOne({ email: username });
-			return user ? user : false;
+			const jsonUser = JSON.parse(JSON.stringify(user));
+			return jsonUser ? jsonUser : false;
 		} catch (error) {
 			throw new Error(`Error al buscar el usuario ${error}`);
 		}
