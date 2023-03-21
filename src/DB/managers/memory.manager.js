@@ -12,7 +12,7 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const { commerce, image } = faker;
+const { commerce, image, datatype } = faker;
 
 class MemoryContainer {
 	getProducts() {
@@ -22,6 +22,7 @@ class MemoryContainer {
 				name: commerce.productName(),
 				price: commerce.price(),
 				thumbnail: image.avatar(),
+				_id: datatype.uuid(),
 			};
 			products.push(product);
 		}
@@ -54,6 +55,7 @@ class MemoryContainer {
 					name: product.name,
 					thumbnail: product.thumbnail,
 					price: parseInt(product.price),
+					_id: datatype.uuid(),
 				};
 				this.addProductToDb(producto);
 				this.getProducts();

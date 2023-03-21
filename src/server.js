@@ -8,6 +8,8 @@ import passport from "passport";
 import cluster from "cluster";
 import os from "os";
 
+import { buildSchema } from "graphql";
+import { graphqlHTTP } from "express-graphql";
 import { Server } from "socket.io";
 import { fileURLToPath } from "url";
 import { DbConfig } from "./config/envConfig.js";
@@ -17,6 +19,8 @@ import { userModel } from "./DB/models/UserModels.js";
 import { logger } from "./logger/logger.js";
 import { router } from "./routes/index.js";
 import { getDbApi } from "./DB/index.js";
+import { ProductServices } from "./services/products.services.js";
+import { UserService } from "./services/user.services.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
@@ -96,4 +100,64 @@ if (DbConfig.mode === "cluster" && cluster.isPrimary) {
 	});
 }
 
+// Construcción del esquema de GraphQL
+const graphqlSchema = buildSchema(`
+	type User{
+		_id: String, 
+		email: String, 
+		password: String,
+		version: Int
+		
+	}
+	type Product{
+		_id: String,
+		name: String,
+		price: Int, 
+		thumbnail: String
+	}
+
+	input UserInput{
+		email: String,
+		password: String
+	}
+
+	input ProductInput{
+		name: String,
+		price: Int,
+		thumbnail: String
+	}
+
+	type Query{
+		getProducts: [Product], 
+		getUserById(id: String): User,
+	}
+	
+	type Mutation{
+		addProduct(product: ProductInput): String
+		addUser(user: UserInput): User
+	}
+`);
+
+// Creamos la logica de los metodos "endpoints api rest"
+
+const root = {
+	getProducts: async () => {
+		return await ProductServices.getProducts();
+	},
+	getUserById: async ({ id }) => {
+		return await UserService.getUser(id);
+	},
+	addProduct: async ({ product }) => {
+		return await ProductServices.addProduct(product);
+	},
+	addUser: async ({ user }) => {
+		return await UserService.saveUser(user);
+	},
+};
+
+//Enlazar el esquema con los metodos y los exponemos en un unico endpoint
+app.use(
+	"/graphql",
+	graphqlHTTP({ schema: graphqlSchema, rootValue: root, graphiql: true })
+);
 export { productContainer, userContainer };

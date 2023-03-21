@@ -22,6 +22,7 @@ class UserMongoManager {
 	async saveUser(user) {
 		try {
 			const userCreated = await this.model.create(user);
+			console.log(userCreated);
 			return userCreated ? userCreated : false;
 		} catch (error) {
 			throw new Error(`Error al guardar el usuario ${error}`);
