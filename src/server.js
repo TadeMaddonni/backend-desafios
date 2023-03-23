@@ -8,8 +8,7 @@ import passport from "passport";
 import cluster from "cluster";
 import os from "os";
 
-import { buildSchema } from "graphql";
-import { graphqlHTTP } from "express-graphql";
+import { graphqlController } from "./controllers/routes.graphql.controller.js";
 import { Server } from "socket.io";
 import { fileURLToPath } from "url";
 import { DbConfig } from "./config/envConfig.js";
@@ -100,44 +99,6 @@ if (DbConfig.mode === "cluster" && cluster.isPrimary) {
 	});
 }
 
-// Construcción del esquema de GraphQL
-const graphqlSchema = buildSchema(`
-	type User{
-		_id: String, 
-		email: String, 
-		password: String,
-		version: Int
-		
-	}
-	type Product{
-		_id: String,
-		name: String,
-		price: Int, 
-		thumbnail: String
-	}
-
-	input UserInput{
-		email: String,
-		password: String
-	}
-
-	input ProductInput{
-		name: String,
-		price: Int,
-		thumbnail: String
-	}
-
-	type Query{
-		getProducts: [Product], 
-		getUserById(id: String): User,
-	}
-	
-	type Mutation{
-		addProduct(product: ProductInput): String
-		addUser(user: UserInput): User
-	}
-`);
-
 // Creamos la logica de los metodos "endpoints api rest"
 
 const root = {
@@ -156,8 +117,5 @@ const root = {
 };
 
 //Enlazar el esquema con los metodos y los exponemos en un unico endpoint
-app.use(
-	"/graphql",
-	graphqlHTTP({ schema: graphqlSchema, rootValue: root, graphiql: true })
-);
+app.use("/graphql", graphqlController());
 export { productContainer, userContainer };
