@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +17,26 @@
 |     Make sure to pass relative path from the project root.
 */
 
-const { Ignitor } = require('@adonisjs/ignitor')
+const { Ignitor } = require("@adonisjs/ignitor");
+const dotenv = require("dotenv");
+dotenv.config();
+const db_URL = process.env.DATABASE_URL;
+const mongoose = require("mongoose");
 
-new Ignitor(require('@adonisjs/fold'))
-  .appRoot(__dirname)
-  .fireHttpServer()
-  .catch(console.error)
+new Ignitor(require("@adonisjs/fold"))
+	.appRoot(__dirname)
+	.fireHttpServer()
+	.catch(console.error);
+
+const connectDb = async () => {
+	try {
+		mongoose.set({ strictQuery: false });
+		await mongoose.connect(db_URL);
+		console.log("Database connected");
+	} catch (error) {
+		throw new Error(
+			"An error occured while connecting to the database" + error
+		);
+	}
+};
+connectDb();

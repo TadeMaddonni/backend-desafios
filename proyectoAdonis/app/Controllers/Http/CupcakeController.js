@@ -1,15 +1,32 @@
 "use strict";
-const Cupcake = use("App/Models/Cupcake");
-class CupcakeController {
-	async getAll() {
+const UserInstance = use("App/Models/user");
+class UserController {
+	static async getAll() {
 		try {
-			const data = await Cupcake.all();
-			const dataJson = data.toJSON();
+			const data = await UserInstance.getAll();
 			return data;
+		} catch (error) {
+			throw new Error(error);
+		}
+	}
+
+	static async getById(email) {
+		try {
+			const data = await UserInstance.getById(email);
+			return data;
+		} catch (error) {
+			throw new Error(error);
+		}
+	}
+
+	static async create(user) {
+		try {
+			const response = await UserInstance.create(user);
+			return response;
 		} catch (error) {
 			throw new Error(error);
 		}
 	}
 }
 
-module.exports = CupcakeController;
+module.exports = UserController;

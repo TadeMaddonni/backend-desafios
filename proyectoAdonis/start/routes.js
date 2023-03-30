@@ -1,5 +1,5 @@
 "use strict";
-const CupcakeController = use("App/Controllers/Http/CupcakeController");
+const UserController = use("App/Controllers/Http/CupcakeController");
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -19,6 +19,17 @@ const Route = use("Route");
 Route.on("/").render("welcome");
 
 Route.get("/cupcakes", async () => {
-	const response = await new CupcakeController().getAll();
+	const response = await UserController.getAll();
+	return { response };
+});
+
+Route.get("/user/:id", async ({ params }) => {
+	const response = await UserController.getById(params.id);
+	return { response };
+});
+
+Route.post("/user", async ({ request }) => {
+	const body = request.post();
+	const response = await UserController.create(body.user);
 	return { response };
 });

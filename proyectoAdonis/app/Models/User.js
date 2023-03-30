@@ -1,39 +1,49 @@
-'use strict'
+"use strict";
 
-/** @type {import('@adonisjs/framework/src/Hash')} */
-const Hash = use('Hash')
+const { all } = require("@adonisjs/lucid/src/Lucid/Model");
+const userModel = require("../../database/model/userModel");
+/** @type  { options import("../../database/config.js")} */
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
-const Model = use('Model')
+/** @type {mongoose import('mongoose')} */
+/** @type {userModel import('./database/model/userModel')} */
+
+const Model = use("Model");
 
 class User extends Model {
-  static boot () {
-    super.boot()
+	/* 	async connectDb() {
+		try {
+			console.log(option.databaseUrl);
+			mongoose.set({ strictQuery: false });
+			await mongoose.connect(options.databaseUrl);
+			console.log("Database connected");
+		} catch (error) {
+			throw new Error(
+				"An error occured while connecting to the database"
+			);
+		}
+	} */
+	async getAll() {
+		const allUsers = await userModel.find();
+		const json = JSON.parse(JSON.stringify(allUsers));
+		return json;
+	}
 
-    /**
-     * A hook to hash the user password before saving
-     * it to the database.
-     */
-    this.addHook('beforeSave', async (userInstance) => {
-      if (userInstance.dirty.password) {
-        userInstance.password = await Hash.make(userInstance.password)
-      }
-    })
-  }
+	async getById(id) {
+		const user = await userModel.find({ _id: id });
+		const json = JSON.parse(JSON.stringify(user));
+		return json;
+	}
 
-  /**
-   * A relationship on tokens is required for auth to
-   * work. Since features like `refreshTokens` or
-   * `rememberToken` will be saved inside the
-   * tokens table.
-   *
-   * @method tokens
-   *
-   * @return {Object}
-   */
-  tokens () {
-    return this.hasMany('App/Models/Token')
-  }
+	async create(user) {
+		console.log(user);
+		const response = "asd";
+		//const response = await userModel.create(user);
+		return response;
+	}
 }
 
-module.exports = User
+const UserInstance = new User();
+//UserInstance.connectDb();
+
+module.exports = UserInstance;
